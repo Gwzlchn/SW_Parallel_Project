@@ -1,0 +1,1 @@
+rsync -avzP learning/ taskScheduler@41.0.0.188:/home/export/online1/taskScheduler/bysj20/wangzl/
