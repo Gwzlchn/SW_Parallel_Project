@@ -38,9 +38,9 @@ int main(){
     st = rpcc();
     for(j=0;j<J;j++){
         for(i=0;i<I;i++){
-            c[j][i] = 0;
+            master[j][i] = 0;
             for(k=0;k<K;k++)
-                c[j][i] += a[j][k] * b[k][i];
+                master[j][i] += a[j][k] * b[k][i];
         }
     }
     ed = rpcc();
