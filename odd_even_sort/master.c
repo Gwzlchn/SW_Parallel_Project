@@ -20,19 +20,10 @@ static inline unsigned long rpcc()
     return cycle;
 }
 
-void bubble_sort (int *a, int n) {
-    int i, t, j = n, s = 1;
-    while (s) {
-        s = 0;
-        for (i = 1; i < j; i++) {
-            if (a[i] < a[i - 1]) {
-                t = a[i];
-                a[i] = a[i - 1];
-                a[i - 1] = t;
-                s = 1;
-            }
-        }
-        j--;
+void sequential_prefix_sum (int *in,int* out, int n) {
+    out[0] = in[0];
+    for(int i = 1;i<n;i++){
+        out[i] = in[i] + out[i-1];
     }
 }
 int main()
@@ -46,12 +37,12 @@ int main()
     for (j = 0; j < J; j++)
     {
         
-        master[j] = J - j -1 ;
-        slave[j] = J - j - 1; 
+        master[j] = j+1;
+        slave[j] = j+1; 
     }
     //master
     st = rpcc();
-    bubble_sort(master,J);
+    sequential_prefix_sum(master,J);
     ed = rpcc();
     printf("the host counter = %ld\n", ed - st);
     
@@ -63,6 +54,13 @@ int main()
     athread_join();
     ed = rpcc();
     printf("the slave counter = %ld\n", ed - st);
+
+
+    
+
+
+
+
     printf("END JOIN\n");
     fflush(NULL);
 

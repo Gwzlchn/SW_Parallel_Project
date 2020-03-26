@@ -20,21 +20,10 @@ static inline unsigned long rpcc()
     return cycle;
 }
 
-void bubble_sort (int *a, int n) {
-    int i, t, j = n, s = 1;
-    while (s) {
-        s = 0;
-        for (i = 1; i < j; i++) {
-            if (a[i] < a[i - 1]) {
-                t = a[i];
-                a[i] = a[i - 1];
-                a[i - 1] = t;
-                s = 1;
-            }
-        }
-        j--;
-    }
+void serial_prefix_sum(int *a,int length){
+    
 }
+
 int main()
 {
     int i, j, k;
@@ -46,8 +35,8 @@ int main()
     for (j = 0; j < J; j++)
     {
         
-        master[j] = J - j -1 ;
-        slave[j] = J - j - 1; 
+        master[j] = j ;
+        slave[j] = j; 
     }
     //master
     st = rpcc();
