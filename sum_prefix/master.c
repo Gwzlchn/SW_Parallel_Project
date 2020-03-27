@@ -6,8 +6,8 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#define J 512 //64*8
-int a[J], master[J], slave[J];
+#define J 1024 //64*16
+int master[J], slave[J];
 
 extern SLAVE_FUN(func)();
 
@@ -20,31 +20,36 @@ static inline unsigned long rpcc()
     return cycle;
 }
 
-void serial_prefix_sum(int *a,int length){
-    
+void serial_prefix_sum(int *a, int length)
+{
+    int i;
+    for (i = 1; i < length; i++)
+    {
+        a[i] += a[i - 1];
+    }
+    return;
 }
 
 int main()
 {
     int i, j, k;
-    double checksum, checksum2;
+    //double checksum, checksum2;
     unsigned long st, ed;
     //init
     printf("BEGIN INIT\n");
     fflush(NULL);
     for (j = 0; j < J; j++)
     {
-        
-        master[j] = j ;
-        slave[j] = j; 
+
+        master[j] = j;
+        slave[j] = j;
     }
     //master
     st = rpcc();
-    bubble_sort(master,J);
+    bubble_sort(master, J);
     ed = rpcc();
     printf("the host counter = %ld\n", ed - st);
-    
-    
+
     //slave
     athread_init();
     st = rpcc();
@@ -57,11 +62,12 @@ int main()
 
     //check
 
-    for(j=0;j<16;j++){
-        printf("master[%d] = %d\t master[%d] = %d\n",j,master[j], J-j-1,master[J-j-1]);
-        printf("slave[%d] = %d\t slave[%d] = %d\n",j,slave[j], J-j-1,slave[J-j-1]);
+    for (j = 0; j < 16; j++)
+    {
+        printf("master[%d] = %d\t master[%d] = %d\n", j, master[j], J - j - 1, master[J - j - 1]);
+        printf("slave[%d] = %d\t slave[%d] = %d\n", j, slave[j], J - j - 1, slave[J - j - 1]);
     }
-   
+
     fflush(NULL);
     athread_halt();
     printf("END\n");

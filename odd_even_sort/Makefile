@@ -1,7 +1,7 @@
 program: master.o slave.o
-	sw5cc -hybrid master.o slave.o -lswperf -Wl,-zmuldefs -o program
+	sw5cc -hybrid master.o slave.o  -o program
 master.o:master.c
-	sw5cc -host -cpp -I/usr/sz/swcc/sw3gcc-binary/include -c master.c
+	sw5cc -host -c master.c
 slave.o: slave.c
 	sw5cc -slave -DTEST -DCHECK -c slave.c
 

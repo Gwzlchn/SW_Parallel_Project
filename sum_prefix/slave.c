@@ -4,7 +4,7 @@
 #include<slave.h>
 
 
-#define J 512
+#define J 1024
 
 __thread_local volatile int get_reply,put_reply,my_id;
 __thread_local volatile unsigned long st,ed;
@@ -26,7 +26,11 @@ void func1(){
     athread_get(PE_MODE, &master[my_id], &a_slave[0],  K * 8, &get_reply, 0, 0, 0); 
 }
 
+// J = 512 = 64*8
 
+1. 取id 后面8个数，计算，存回去
+2. 取id-1 这个数，取id+8这个数，id+8 加上去，存回去
+3. 取id-1 这个数，其余位加上，存回去
 
 
 
