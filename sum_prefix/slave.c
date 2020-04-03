@@ -4,13 +4,15 @@
 #include<slave.h>
 
 
-#define J 1024
+#define J 128
+#define SIZE  (J/64)
 
 __thread_local volatile int get_reply,put_reply,my_id;
 __thread_local volatile unsigned long st,ed;
-__thread_local double a_slave[I],b_slave[K][I],c_slave[I];
+__thread_local long slave_local[16];
+__thread_local long slave_local_last = 0;
 
-extern  int in[J],slave[J];
+extern  long slave[J];
 
 
 static inline void rtc(unsigned long *counter){
@@ -19,18 +21,69 @@ static inline void rtc(unsigned long *counter){
     *counter =(unsigned long ) rtc;
 }
 
-void func1(){
+void func(){
+    
     my_id = athread_get_id(-1);
+    int idx = my_id*SIZE;
     get_reply = 0;
     put_reply = 0;
-    athread_get(PE_MODE, &master[my_id], &a_slave[0],  K * 8, &get_reply, 0, 0, 0); 
+    athread_get(PE_MODE, &slave[idx], &slave_local[0],  SIZE * 8, &get_reply, 0, 0, 0); 
+    while(get_reply!=2)
+        ;
+    //rtc(&ed_get);
+
+    //first time
+    int i;
+    for(i=1;i<SIZE;i++){
+        slave_local[i] += slave_local[i-1];
+    }
+
+    athread_put(PE_MODE, &slave_local[0], &slave[idx], SIZE * 8, &put_reply, 0, 0);
+    while(put_reply!=1)
+        ;
+    //rtc(&ed_put);
+    athread_syn(ARRAY_SCOPE, 0xFFFF);
+    if(my_id == 0) {
+        printf("id=0 first time done");
+         return;
+    }
+       
+
+    //second time
+    
+    athread_get(PE_MODE, &slave[idx-1], &slave_local_last,   8, &get_reply, 0, 0, 0);
+    slave[idx + SIZE - 1] += slave_local_last;
+    athread_put(PE_MODE, &slave_local_last, &slave[idx + SIZE - 1],  8, &put_reply, 0, 0);
+     while(put_reply!=1)
+        ;
+    //rtc(&ed_put);
+    athread_syn(ARRAY_SCOPE, 0x7F7F);
+
+    if(my_id == 1) {
+        printf("id=1 second time done");
+    }
+
+    //third time
+    for(i=0;i<SIZE-1;i++){
+        slave_local[i] += slave_local_last;
+    }
+    athread_put(PE_MODE, &slave_local[0], &slave[idx], (SIZE -1)* 8, &put_reply, 0, 0);
+    while(put_reply!=1)
+        ;
+    //rtc(&ed_put);
+    athread_syn(ARRAY_SCOPE, 0x7F7F);
+
+    if(my_id==1){
+        printf("%ld",slave_local_last);
+    }
+    return;
+
+    
 }
 
-// J = 512 = 64*8
 
-1. 取id 后面8个数，计算，存回去
-2. 取id-1 这个数，取id+8这个数，id+8 加上去，存回去
-3. 取id-1 这个数，其余位加上，存回去
+
+
 
 
 

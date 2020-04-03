@@ -6,8 +6,8 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#define J 1024 //64*16
-int master[J], slave[J];
+#define J 128 //64*16
+long master[J], slave[J];
 
 extern SLAVE_FUN(func)();
 
@@ -20,7 +20,7 @@ static inline unsigned long rpcc()
     return cycle;
 }
 
-void serial_prefix_sum(int *a, int length)
+void serial_prefix_sum(long *a, int length)
 {
     int i;
     for (i = 1; i < length; i++)
@@ -46,7 +46,7 @@ int main()
     }
     //master
     st = rpcc();
-    bubble_sort(master, J);
+    serial_prefix_sum(master, J);
     ed = rpcc();
     printf("the host counter = %ld\n", ed - st);
 
@@ -64,8 +64,8 @@ int main()
 
     for (j = 0; j < 16; j++)
     {
-        printf("master[%d] = %d\t master[%d] = %d\n", j, master[j], J - j - 1, master[J - j - 1]);
-        printf("slave[%d] = %d\t slave[%d] = %d\n", j, slave[j], J - j - 1, slave[J - j - 1]);
+        printf("master[%d] = %ld\t master[%d] = %ld\n", j, master[j], J - j - 1, master[J - j - 1]);
+        printf("slave[%d] = %ld\t slave[%d] = %ld\n", j, slave[j], J - j - 1, slave[J - j - 1]);
     }
 
     fflush(NULL);
