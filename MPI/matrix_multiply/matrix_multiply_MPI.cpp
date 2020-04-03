@@ -7,7 +7,7 @@
 
 #define  ll long long
 
-//¶ÔrowĞĞcolÁĞ¾ØÕó³õÊ¼»¯
+//å¯¹rowè¡Œcolåˆ—çŸ©é˜µåˆå§‹åŒ–
 void init_matrix_eye(double* matrix, ll rows, ll cols)
 {
 	for (ll i = 0; i < rows ; i++) {
@@ -63,8 +63,8 @@ int main(int argc, char* argv[])
 	int NUM_PROC = atoi(argv[1]);
 	//int ELEM_PER_PROC = atoi(argv[2]);
 	
-	ll N = atoll(argv[2]); //·½ÕóµÄÎ¬¶È
-	int ROWS_PER_PROC = N / NUM_PROC;//Ã¿¸ö´¦ÀíÆ÷Òª´¦ÀíµÄĞĞÊı
+	ll N = atoll(argv[2]); //æ–¹é˜µçš„ç»´åº¦
+	int ROWS_PER_PROC = N / NUM_PROC;//æ¯ä¸ªå¤„ç†å™¨è¦å¤„ç†çš„è¡Œæ•°
 
 
 	int my_rank, num_procs;
@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
 
 
 	double* A, * B, * C, * C_seq;
-	double* proc_row_A, * proc_row_C;//°ÑA C»®·Ö³ÉĞĞÏòÁ¿
+	double* proc_row_A, * proc_row_C;//æŠŠA Cåˆ’åˆ†æˆè¡Œå‘é‡
 
 	B = (double*)malloc(sizeof(double) * N * N);
 	init_matrix_random(B, N, N);
