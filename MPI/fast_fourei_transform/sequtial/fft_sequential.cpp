@@ -1,17 +1,16 @@
-//NOTE: the 2*N should be in power of 2
+
 
 //IMPORTANT HEADERS AND MICROS
 //------------------------------------------------------------------------------------------------------------------------
-#include"../stdc++.h"
+#include"stdc++.h"
+#include"Complex.h"
 using namespace std;
-
-#define fast ios_base::sync_with_stdio(NULL),cin.tie(NULL),cout.tie(NULL);
-
 const long double PI = acos(-1);
 
-//PROGRAM
-//-----------------------------------------------------------------------------------------------------------------------
-using cd = complex<double>;
+
+
+using cd = Complex;
+
 
 int reverse(int num, int lg_n) {
 	int res = 0;
