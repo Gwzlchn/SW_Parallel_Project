@@ -15,13 +15,24 @@ void Swap(cd* a, cd* b) {
 	*a = temp;
 }
 
-int reverse(int num, int lg_n) {
-	int res = 0;
-	for (int i = 0; i < lg_n; i++) {
-		if (num & (1 << i))
-			res |= 1 << (lg_n - 1 - i);
+
+
+
+void Rader(Complex y[],int len)
+{
+	for (int i = 1, j = len >> 1, k; i < len - 1; ++i)
+	{
+		if (i < j)
+			Swap(&y[i], &y[j]);
+		k = len >> 1;
+		while (j >= k)
+		{
+			j -= k;
+			k >>= 1;
+		}
+		if (j < k)
+			j += k;
 	}
-	return res;
 }
 
 
@@ -30,14 +41,7 @@ int reverse(int num, int lg_n) {
 void fft(cd a[] ,int n, bool invert) 
 {
 
-	int lg_n = 0;
-	while ((1 << lg_n) < n)
-		lg_n++;
-
-	for (int i = 0; i < n; i++) {
-		if (i < reverse(i, lg_n))
-			Swap(&a[i], &a[reverse(i, lg_n)]);
-	}
+	Rader(a, n);
 
 	for (int len = 2; len <= n; len <<= 1) {
 		double ang = 2 * PI / len * (invert ? -1 : 1);
