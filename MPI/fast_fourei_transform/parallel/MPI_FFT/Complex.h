@@ -7,8 +7,8 @@ public:
 	Complex(double real, double image);
 
 	bool operator==(const Complex& c);
-
 	Complex& operator=(const Complex& c);
+
 
 	Complex operator+(const Complex& c);
 	Complex& operator+=(const Complex& c);
@@ -139,6 +139,10 @@ Complex& Complex::operator=(const Complex& c)
 
 double real(const Complex& com) {
 	return com._real;
+}
+
+double imag(const Complex& com) {
+	return com._image;
 }
 
 

@@ -32,7 +32,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="MPIHelloWorld.cpp" />
+    <ClCompile Include="FFT_MPI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Complex.h" />
