@@ -1,20 +1,19 @@
 
 
-//IMPORTANT HEADERS AND MICROS
-//------------------------------------------------------------------------------------------------------------------------
-#include"stdc++.h"
+#include<stdlib.h>
+#include<math.h>
+#include<stdio.h>
 #include"Complex.h"
-using namespace std;
-const long double PI = acos(-1);
 
-using cd = Complex;
+
+const long double PI = acos(-1);
+typedef Complex  cd;
 
 void Swap(cd* a, cd* b) {
 	cd temp = *b;
 	*b = *a;
 	*a = temp;
 }
-
 
 
 
@@ -122,15 +121,11 @@ int main()
 	int* seq_fft_res = multiply_polys_seq_fft(a, b,a_len,b_len);
 
 	for (int i = 0; i < 16;i++) {
-		cout << seq_fft_res[i] << " ";
+		printf("%d \t" ,seq_fft_res[i]);
 	}
 
 
 
-
-	
-
-	
 
 	
 
