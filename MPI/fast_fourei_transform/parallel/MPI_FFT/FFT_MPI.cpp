@@ -10,9 +10,9 @@ const long double PI = acos(-1);
 using cd = Complex;
 
 void Swap(cd* a, cd* b) {
-	cd* temp = a;
+	cd temp = *b;
 	*b = *a;
-	*a = *temp;
+	*a = temp;
 }
 
 int reverse(int num, int lg_n) {
@@ -36,7 +36,7 @@ void fft(cd a[] ,int n, bool invert)
 
 	for (int i = 0; i < n; i++) {
 		if (i < reverse(i, lg_n))
-			swap(a[i], a[reverse(i, lg_n)]);
+			Swap(&a[i], &a[reverse(i, lg_n)]);
 	}
 
 	for (int len = 2; len <= n; len <<= 1) {
