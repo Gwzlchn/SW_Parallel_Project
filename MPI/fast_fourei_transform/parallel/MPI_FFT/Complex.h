@@ -144,11 +144,11 @@ inline Complex& Complex::operator=(const long& c)
 }
 
 
-double real(const Complex& com) {
+double creal(const Complex& com) {
 	return com._real;
 }
 
-double imag(const Complex& com) {
+double cimag(const Complex& com) {
 	return com._image;
 }
 
