@@ -3,14 +3,11 @@
 class Complex
 {
 public:
+	Complex(long real);
 	Complex(double real, double image);
-	void Print();
+
 	bool operator==(const Complex& c);
-	Complex& operator++();   //前置++
-	Complex operator++(int); //后置++
-	Complex& operator--();   //前置--
-	Complex operator--(int); //后置--
-	bool operator>(const Complex& c);
+
 	Complex& operator=(const Complex& c);
 
 	Complex operator+(const Complex& c);
@@ -28,9 +25,12 @@ public:
 };
 
 
+Complex::Complex(long real = 0)
+	:_real(real),
+	_image(0)
+{}
 
-
-Complex::Complex(double real = 0.0, double image = 0.0)  //构造函数
+Complex::Complex(double real , double image)  //构造函数
 	:_real(real)
 	, _image(image)
 {}
