@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30002.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MPI_FFT", "MPI_FFT.vcxproj", "{1D567F8F-3B07-4B39-A501-DFB7174A9CB7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1D567F8F-3B07-4B39-A501-DFB7174A9CB7}.Debug|x64.ActiveCfg = Debug|x64
+		{1D567F8F-3B07-4B39-A501-DFB7174A9CB7}.Debug|x64.Build.0 = Debug|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A2D70CB4-FC40-482F-B313-4A4C1D318EFE}
+	EndGlobalSection
+EndGlobal
