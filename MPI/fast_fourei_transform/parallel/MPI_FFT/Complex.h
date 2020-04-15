@@ -8,7 +8,7 @@ public:
 
 	bool operator==(const Complex& c);
 	Complex& operator=(const Complex& c);
-
+	Complex& operator=(const long& c);
 
 	Complex operator+(const Complex& c);
 	Complex& operator+=(const Complex& c);
@@ -133,6 +133,13 @@ Complex& Complex::operator=(const Complex& c)
 		_real = c._real;
 		_image = c._image;
 	}
+	return *this;
+}
+
+inline Complex& Complex::operator=(const long& c)
+{
+	this->_real = c;
+	this->_image = 0;
 	return *this;
 }
 
