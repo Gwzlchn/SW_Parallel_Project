@@ -4,7 +4,7 @@
 #include<math.h>
 #include<stdio.h>
 #include<mpi.h>
-
+#include <stddef.h>
 
 #ifdef _MSC_VER
 #include<corecrt_math_defines.h>
@@ -33,7 +33,8 @@ void Swap(cd* a, cd* b) {
 }
 
 
-void Rader(cd* y, int len) 
+
+void array_bit_reverse(cd* y, int len) 
 {
 
     int i, j;
@@ -112,11 +113,13 @@ int* multiply_polys_seq_fft(const int* poly_a, const int* poly_b, const int a_le
     init_poly_arr(poly_a, poly_b, a_len, b_len, poly_a_cd, poly_b_cd,len);
 
     //finding FFT of equations A and B separately
-    Rader(poly_a_cd, len);
-    Rader(poly_b_cd, len);
+    array_bit_reverse(poly_a_cd, len);
+    array_bit_reverse(poly_b_cd, len);
     fft(poly_a_cd, len, false);
     fft(poly_b_cd, len, false);
 
+
+    output_complex_arr(poly_a_cd, len, "test_out_a.txt");
 
     //combing the FFT of A and B
     cd* F_C = (cd*)malloc(sizeof(cd) * len);
@@ -125,7 +128,7 @@ int* multiply_polys_seq_fft(const int* poly_a, const int* poly_b, const int a_le
         F_C[i] = poly_a_cd[i] * poly_b_cd[i];
 
     //finding the inverse DFT and dividing it by 1/n
-    Rader(F_C, len);
+    array_bit_reverse(F_C, len);
     fft(F_C, len, true);
 
     int* res = (int*)malloc(sizeof(int) * len);
@@ -135,9 +138,77 @@ int* multiply_polys_seq_fft(const int* poly_a, const int* poly_b, const int a_le
     }
 
     *c_len = len;
+    free(poly_a_cd);
+    free(poly_b_cd);
+    free(F_C);
     return res;
 }
 
+
+void array_par_fft(int* array_a,int len) {
+    cd* array_a_cd = (cd*)malloc(sizeof(cd) * len);
+    int i = 0;
+    for (i = 0; i < len; i++) {
+        array_a_cd[i] = array_a[i];
+    }
+    array_bit_reverse(array_a_cd, len);
+
+    MPI_Init(NULL, NULL);
+    int rank, size;
+
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+
+
+    /* create a type for struct complex */
+#ifdef _MSC_VER
+    const int nitems = 2;
+    int          blocklengths[2] = { 1,1 };
+    MPI_Datatype types[2] = { MPI_DOUBLE, MPI_DOUBLE };
+    MPI_Datatype MPI_OWN_COMPLEX_TYPE;
+    MPI_Aint     offsets[2];
+    offsets[0] = offsetof(cd, _real);
+    offsets[1] = offsetof(cd, _imag);
+
+    MPI_Type_create_struct(nitems, blocklengths, offsets, types, &MPI_OWN_COMPLEX_TYPE);
+    MPI_Type_commit(&MPI_OWN_COMPLEX_TYPE);
+    
+#endif // _MSC_VER
+    /* create a type for struct complex  DONE*/
+
+    int PER_PROC_SIZE = len / size;
+    if (len % size) {
+        printf("the input length is wrong!\n");
+        return;
+    }
+
+    cd* array_per_proc = (cd*)malloc(sizeof(cd) * len);
+    MPI_Scatter(array_a_cd, PER_PROC_SIZE, MPI_OWN_COMPLEX_TYPE, \
+        array_per_proc, PER_PROC_SIZE ,MPI_OWN_COMPLEX_TYPE, \
+        0, MPI_COMM_WORLD);
+
+    fft(array_per_proc, PER_PROC_SIZE,false);
+
+    MPI_Gather(array_per_proc, PER_PROC_SIZE, MPI_OWN_COMPLEX_TYPE, \
+        array_a_cd, PER_PROC_SIZE, MPI_OWN_COMPLEX_TYPE, \
+        0, MPI_COMM_WORLD);
+    
+    print_complex_console(array_a_cd, len);
+
+
+
+
+
+
+    //array_per_proc = (cd*)
+
+
+
+
+
+
+    return;
+}
 
 int* multiply_polys_par_mpi_fft(int* poly_a, int* poly_b, int a_len, int b_len, int* c_len) 
 {
@@ -154,7 +225,7 @@ int* multiply_polys_par_mpi_fft(int* poly_a, int* poly_b, int a_len, int b_len, 
 }
 
 
-int main() {
+int main(int argc, char** argv) {
 
 
     int a[] = { 1, 2, 3, 4, 5, 6, 7, 8 };
@@ -168,6 +239,34 @@ int main() {
     for (i = 0; i < c_len; i++) {
         printf("%d  ", seq_fft_res[i]);
     }
+
+    argv[1] = "array_in.txt";
+    if (argv[1] == NULL) {
+        return 0;
+    }
+
+    int par_size = 0;
+    FILE* arr_file;
+    arr_file = fopen(argv[1], "r");
+
+    if (arr_file) {
+        fscanf(arr_file, "%d", &par_size);
+        int* par_arr = (int*)malloc(sizeof(int) * par_size);
+
+
+        //i = 0;
+        for (i = 0; i < par_size; i++) {
+            fscanf(arr_file, "%d", &par_arr[i]);
+        }
+
+        array_par_fft(par_arr, par_size);
+        
+    }
+    
+
+
+
+
 
 
     return 0;
