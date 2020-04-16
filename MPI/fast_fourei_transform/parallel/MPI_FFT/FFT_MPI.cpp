@@ -32,7 +32,11 @@ void Swap(cd* a, cd* b) {
     *a = temp;
 }
 
-
+inline int log2_int(register int x) {
+    register int ans = 0;
+    while ((x >>= 1)) ++ans;
+    return ans;
+}
 
 void array_bit_reverse(cd* y, int len) 
 {
@@ -53,7 +57,7 @@ void array_bit_reverse(cd* y, int len)
 }
 
 
-void fft(cd* a, int n, bool invert) 
+int fft(cd* a, int n, bool invert) 
 {
 
     int len;
@@ -80,6 +84,7 @@ void fft(cd* a, int n, bool invert)
         }
 
     }
+    return len;
 }
 
 void init_poly_arr(const int* poly_a, const int* poly_b, int a_len, int b_len,
@@ -145,7 +150,38 @@ int* multiply_polys_seq_fft(const int* poly_a, const int* poly_b, const int a_le
 }
 
 
-void array_par_fft(int* array_a,int len) {
+int fft_one_step(cd* a, int n,int step,bool invert)
+{
+
+    int len = step;
+   // for (len = 2; len <= n; len <<= 1) {
+        double ang = 2 * PI / len * (invert ? -1 : 1);
+        cd wlen(cos(ang), sin(ang));
+        int i = 0;
+        for (i = 0; i < n; i += len) {
+            cd w = 1;
+            int j = 0;
+            for (j = 0; j < len / 2; j++) {
+                cd u = a[i + j], v = a[i + j + len / 2] * w;
+                a[i + j] = u + v;
+                a[i + j + len / 2] = u - v;
+                w *= wlen;
+            }
+        }
+   // }
+
+    if (invert) {
+        int i;
+        for (i = 0; i < n; i++) {
+            a[i] /= n;
+        }
+
+    }
+
+    return len;
+}
+
+void array_par_fft(int* array_a, int len) {
     cd* array_a_cd = (cd*)malloc(sizeof(cd) * len);
     int i = 0;
     for (i = 0; i < len; i++) {
@@ -158,7 +194,9 @@ void array_par_fft(int* array_a,int len) {
 
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-
+   
+    int lg_proc_size = log2_int(size);
+    int lg_arr_len = log2_int(len);
 
     /* create a type for struct complex */
 #ifdef _MSC_VER
@@ -187,22 +225,44 @@ void array_par_fft(int* array_a,int len) {
         array_per_proc, PER_PROC_SIZE ,MPI_OWN_COMPLEX_TYPE, \
         0, MPI_COMM_WORLD);
 
-    fft(array_per_proc, PER_PROC_SIZE,false);
+    //fft_one_step(array_a_cd, PER_PROC_SIZE, false);
 
-    MPI_Gather(array_per_proc, PER_PROC_SIZE, MPI_OWN_COMPLEX_TYPE, \
-        array_a_cd, PER_PROC_SIZE, MPI_OWN_COMPLEX_TYPE, \
-        0, MPI_COMM_WORLD);
+
+    int cur_fft_step = fft(array_per_proc, PER_PROC_SIZE, false);
+
+    int step = 2;
+    for (step = 2; step <= size; step<<=1) {
+        int half_step = step >> 1;
+        if (rank % step != 0) {
+            MPI_Send(array_per_proc, PER_PROC_SIZE * half_step, MPI_OWN_COMPLEX_TYPE, \
+                rank - half_step, 0, MPI_COMM_WORLD);
+
+            break;
+        }
+        else {
+            cd* cur_cd_address = array_per_proc + PER_PROC_SIZE * half_step;
+            MPI_Recv(cur_cd_address, PER_PROC_SIZE * half_step, MPI_OWN_COMPLEX_TYPE, \
+                rank + half_step, 0, MPI_COMM_WORLD,MPI_STATUSES_IGNORE);
+            cur_fft_step *= 2; 
+            fft_one_step(array_per_proc, PER_PROC_SIZE * step, cur_fft_step,false);
+        }
+    }
+
+
+
+
+
+    if (rank == 0) {
+        print_complex_console(array_per_proc, len);
+    }
+
     
-    print_complex_console(array_a_cd, len);
-
-
-
 
 
 
     //array_per_proc = (cd*)
 
-
+    MPI_Finalize();
 
 
 
@@ -237,11 +297,12 @@ int main(int argc, char** argv) {
 
     int i = 0;
     for (i = 0; i < c_len; i++) {
-        printf("%d  ", seq_fft_res[i]);
+       // printf("%d  ", seq_fft_res[i]);
     }
 
     argv[1] = "array_in.txt";
     if (argv[1] == NULL) {
+        
         return 0;
     }
 
@@ -261,6 +322,9 @@ int main(int argc, char** argv) {
 
         array_par_fft(par_arr, par_size);
         
+    }
+    else {
+        printf("NO INOUT FILE!\n");
     }
     
 

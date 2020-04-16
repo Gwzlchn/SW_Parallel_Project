@@ -170,6 +170,7 @@ void output_complex_arr(Complex* cd_arr, int len, char* file_name) {
 		fprintf(out_ptr, "(%.5lf + %.5lfi)\n", creal(cd_arr[i]), cimag(cd_arr[i]));
 	}
 	fprintf(out_ptr, "\n");
+	fclose(out_ptr);
 
 }
 
