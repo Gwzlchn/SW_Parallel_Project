@@ -13,11 +13,9 @@ typedef Complex cd;
 #endif // __MSVER_
 
 #ifdef __GNUC__
-
 #include<complex.h>
-
 typedef double complex cd;
-
+#define MPI_OWN_COMPLEX_TYPE MPI_C_DOUBLE_COMPLEX
 typedef enum {
     false, true
 } bool;
@@ -38,7 +36,20 @@ inline int log2_int(register int x) {
     return ans;
 }
 
-void array_bit_reverse(cd* y, int len) 
+
+void print_complex_console(cd* cd_arr, int len) {
+
+    printf("%d\n", len);
+    int i = 0;
+    for (i = 0; i < len; i++) {
+        printf("(%.5lf + %.5lfi)\n", creal(cd_arr[i]), cimag(cd_arr[i]));
+    }
+    printf("\n");
+}
+
+
+
+void array_bit_reverse(cd* y, int len)
 {
 
     int i, j;
@@ -57,13 +68,13 @@ void array_bit_reverse(cd* y, int len)
 }
 
 //返回的是当前操作间距
-int fft_seq(cd* a, int n, bool invert) 
+int fft_seq(cd* a, int n, bool invert)
 {
 
     int len;
     for (len = 2; len <= n; len <<= 1) {
         double ang = 2 * PI / len * (invert ? -1 : 1);
-        cd wlen(cos(ang), sin(ang));
+        cd wlen = cos(ang) +  sin(ang)*I;
         int i = 0;
         for (i = 0; i < n; i += len) {
             cd w = 1;
@@ -104,12 +115,12 @@ void init_poly_arr(const int* poly_a, const int* poly_b, int a_len, int b_len,
         poly_b_cd[i] = 0;
     }
 
-   
+
 }
 
-int* multiply_polys_seq_fft(const int* poly_a, const int* poly_b, const int a_len, const int b_len, int* c_len) 
+int* multiply_polys_seq_fft(const int* poly_a, const int* poly_b, const int a_len, const int b_len, int* c_len)
 {
-   
+
     int len = 1;
     while (len < a_len + b_len) len <<= 1;
 
@@ -124,7 +135,7 @@ int* multiply_polys_seq_fft(const int* poly_a, const int* poly_b, const int a_le
     fft_seq(poly_b_cd, len, false);
 
 
-    output_complex_arr(poly_a_cd, len, "test_out_a.txt");
+    //output_complex_arr(poly_a_cd, len, "test_out_a.txt");
 
     //combing the FFT of A and B
     cd* F_C = (cd*)malloc(sizeof(cd) * len);
@@ -155,7 +166,7 @@ void fft_one_step(cd* a, int n,int step,bool invert)
 
     //int len = step;
     double ang = 2 * PI / step * (invert ? -1 : 1);
-    cd wlen(cos(ang), sin(ang));
+    cd wlen = cos(ang) + sin(ang)*I;
     int i = 0;
     for (i = 0; i < n; i += step) {
         cd w = 1;
@@ -235,7 +246,7 @@ void array_par_fft(int* array_a, int a_len) {
 
     int len = 1;
     while (len < a_len +1 ) len <<= 1;
-   
+
     cd* array_a_cd = init_par_array(array_a, a_len,len);
 
     MPI_Init(NULL, NULL);
@@ -243,9 +254,8 @@ void array_par_fft(int* array_a, int a_len) {
 
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
     MPI_Comm_size(MPI_COMM_WORLD, &proc_size);
-   
-    int lg_proc_size = log2_int(proc_size);
-    int lg_arr_len = log2_int(len);
+
+
 
     /* create a type for struct complex */
 #ifdef _MSC_VER
@@ -259,7 +269,7 @@ void array_par_fft(int* array_a, int a_len) {
 
     MPI_Type_create_struct(nitems, blocklengths, offsets, types, &MPI_OWN_COMPLEX_TYPE);
     MPI_Type_commit(&MPI_OWN_COMPLEX_TYPE);
-    
+
 #endif // _MSC_VER
     /* create a type for struct complex  DONE*/
 
@@ -286,8 +296,8 @@ void array_par_fft(int* array_a, int a_len) {
     int done = 0;
     int partner;
     //每次当前处理器与相邻处理器的间距
-    int proc_step = 2;
-    int half_proc_step = proc_step >> 1;
+    unsigned proc_step = 2;
+    unsigned half_proc_step = proc_step >> 1;
 
 
     while (!done && bit_mask < proc_size) {
@@ -295,7 +305,7 @@ void array_par_fft(int* array_a, int a_len) {
         // 接收数据，计算下一轮
         if (my_rank < partner) {
             //
-            cd* cur_cd_address = array_per_proc + size_t(PER_PROC_SIZE) * size_t(half_proc_step);
+            cd* cur_cd_address = array_per_proc + (PER_PROC_SIZE) * (half_proc_step);
             MPI_Recv(cur_cd_address, PER_PROC_SIZE * half_proc_step, MPI_OWN_COMPLEX_TYPE, \
                 my_rank + half_proc_step, 0, MPI_COMM_WORLD, MPI_STATUSES_IGNORE);
             cur_fft_step *= 2;
@@ -305,7 +315,7 @@ void array_par_fft(int* array_a, int a_len) {
             proc_step <<= 1;
             half_proc_step <<= 1;
         }
-        //发送数据，之后退出
+            //发送数据，之后退出
         else {
             MPI_Send(array_per_proc, PER_PROC_SIZE * half_proc_step, MPI_OWN_COMPLEX_TYPE, \
                 my_rank - half_proc_step, 0, MPI_COMM_WORLD);
@@ -314,7 +324,7 @@ void array_par_fft(int* array_a, int a_len) {
     }
 
 
-    
+
 
 
 
@@ -323,18 +333,15 @@ void array_par_fft(int* array_a, int a_len) {
         print_complex_console(array_per_proc, len);
     }
 
-    
+
     free(array_per_proc);
 
     MPI_Finalize();
 
-
-
-
     return;
 }
 
-int* multiply_polys_par_mpi_fft(int* poly_a, int* poly_b, int a_len, int b_len, int* c_len) 
+int* multiply_polys_par_mpi_fft(int* poly_a, int* poly_b, int a_len, int b_len, int* c_len)
 {
 
     int len = 1;
@@ -343,7 +350,7 @@ int* multiply_polys_par_mpi_fft(int* poly_a, int* poly_b, int a_len, int b_len, 
     cd* poly_a_cd = (cd*)malloc(sizeof(cd) * len);
     cd* poly_b_cd = (cd*)malloc(sizeof(cd) * len);
     init_poly_arr(poly_a, poly_b, a_len, b_len, poly_a_cd, poly_b_cd, len);
-    
+
 
     return NULL;
 }
@@ -398,18 +405,18 @@ int main(int argc, char** argv) {
 
     int i = 0;
     for (i = 0; i < c_len; i++) {
-       printf("%d  ", seq_fft_res[i]);
+        printf("%d  ", seq_fft_res[i]);
     }
 
-  
-   
 
-       
+
+
+
     //Parallel
     array_par_fft(array_a,a_len);
-        
-    
-    
+
+
+
 
 
 
