@@ -181,5 +181,5 @@ void print_complex_console(Complex* cd_arr, int len) {
 	for (i = 0; i < len; i++) {
 		printf("(%.5lf + %.5lfi)\n", creal(cd_arr[i]), cimag(cd_arr[i]));
 	}
-	printf("\n");
+	printf("END ARRAY\n");
 }
