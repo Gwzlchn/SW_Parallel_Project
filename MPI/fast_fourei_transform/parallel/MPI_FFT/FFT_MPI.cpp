@@ -26,6 +26,8 @@ typedef enum {
 const long double PI = M_PI;
 MPI_Datatype  MPI_OWN_COMPLEX_TYPE;
 #define debug0 0
+typedef long long IntCoefType;
+typedef long LenType;
 
 
 /* create a type for struct complex */
@@ -51,23 +53,19 @@ void Swap(cd* a, cd* b) {
     *a = temp;
 }
 
-inline int log2_int(register int x) {
-    register int ans = 0;
-    while ((x >>= 1)) ++ans;
-    return ans;
-}
+
 
 //返回 a b 之和最近的二次幂
-inline int power_2_sum(int a_len, int b_len) {
-    int len = 1;
+inline LenType power_2_sum(LenType a_len, LenType b_len) {
+    LenType len = 1;
     while (len < a_len + b_len) len <<= 1;
     return len;
 }
 
 
 //读取文件行数，并将文件指针指回头部
-inline int count_file_line(FILE* file_ptr) {
-    int line_count = 0;
+inline LenType count_file_line(FILE* file_ptr) {
+    LenType line_count = 0;
     char ch;
     while ((ch = fgetc(file_ptr)) != EOF) {
         if (ch == '\n')
@@ -77,18 +75,17 @@ inline int count_file_line(FILE* file_ptr) {
     return line_count;
 }
 
-inline void init_integer_array_from_file(FILE* file_ptr, int* arr, int file_line_cnt) {
-    int i = 0;
+inline void init_integer_array_from_file(FILE* file_ptr, IntCoefType* arr, LenType file_line_cnt) {
+    LenType i = 0;
     for (i = 0; i < file_line_cnt; i++) {
         fscanf(file_ptr, "%d", &arr[i]);
     }
 }
 
-void array_bit_reverse(cd* y, int len) 
+void array_bit_reverse(cd* y, LenType len)
 {
-
-    int i, j;
-    int k = 0;
+    LenType i, j;
+    LenType k = 0;
     for (i = 1, j = len >> 1, k; i < len - 1; ++i) {
         if (i < j)
             Swap(&y[i], &y[j]);
@@ -102,10 +99,11 @@ void array_bit_reverse(cd* y, int len)
     }
 }
 
-cd* init_complex_array(const int* array_a, int a_len, int final_len) {
+
+cd* init_complex_array(const IntCoefType* array_a, LenType a_len, LenType final_len) {
 
     cd* array_a_cd = (cd*)malloc(sizeof(cd) * final_len);
-    int i = 0;
+    LenType i = 0;
     for (i = 0; i < a_len; i++) {
         array_a_cd[i] = array_a[i];
     }
@@ -116,25 +114,26 @@ cd* init_complex_array(const int* array_a, int a_len, int final_len) {
     return array_a_cd;
 }
 
-int* complex_array_round_to_int(cd* cd_array, int len) {
-    int* res = (int*)malloc(sizeof(int) * len);
-    int i = 0;
+
+
+IntCoefType* complex_array_round_to_int(cd* cd_array, LenType len) {
+    IntCoefType* res = (IntCoefType*)malloc(sizeof(IntCoefType) * len);
+    LenType i = 0;
     for (i = 0; i < len; i++) {
-        res[i] = ((int)(creal(cd_array[i]) + 0.5));
+        res[i] = ((IntCoefType)(creal(cd_array[i]) + 0.5));
     }
     return res;
 }
 
 
-void fft_one_step(cd* a, int n, int step, bool invert)
+void fft_one_step(cd* a, LenType n, LenType step, bool invert)
 {
-
     double ang = 2 * PI / step * (invert ? -1 : 1);
     cd wlen(cos(ang), sin(ang));
-    int i = 0;
+    LenType i = 0;
     for (i = 0; i < n; i += step) {
         cd w = 1;
-        int j = 0;
+        LenType j = 0;
         for (j = 0; j < step / 2; j++) {
             cd u = a[i + j], v = a[i + j + step / 2] * w;
             a[i + j] = u + v;
@@ -146,10 +145,10 @@ void fft_one_step(cd* a, int n, int step, bool invert)
 }
 
 //返回的是当前操作间距
-int fft_seq(cd* a, int n, bool invert) 
+int fft_seq(cd* a, LenType n, bool invert)
 {
 
-    int len;
+    LenType len;
     for (len = 2; len <= n; len <<= 1) {
         fft_one_step(a, n, len, invert);
     }
@@ -158,9 +157,9 @@ int fft_seq(cd* a, int n, bool invert)
     return len/2;
 }
 
-inline void invert_fft_divide(cd* array, int n) 
+inline void invert_fft_divide(cd* array, LenType n)
 {
-    int i;
+    LenType i;
     for (i = 0; i < n; i++) {
         array[i] /= n;
     }
@@ -170,7 +169,10 @@ inline void invert_fft_divide(cd* array, int n)
 
 
 
-int* multiply_polys_seq_fft(const int* poly_a, const int* poly_b, const int a_len, const int b_len, int len) 
+
+
+IntCoefType* multiply_polys_seq_fft(const IntCoefType* poly_a, const IntCoefType* poly_b, \
+                            const LenType a_len, const LenType b_len, LenType len)
 {
    
    
@@ -188,7 +190,7 @@ int* multiply_polys_seq_fft(const int* poly_a, const int* poly_b, const int a_le
 
     //combing the FFT of A and B
     cd* F_C = (cd*)malloc(sizeof(cd) * len);
-    int i;
+    LenType i;
     for (i = 0; i < len; i++)
         F_C[i] = poly_a_cd[i] * poly_b_cd[i];
     if (debug0) {
@@ -210,7 +212,7 @@ int* multiply_polys_seq_fft(const int* poly_a, const int* poly_b, const int a_le
 
 
     
-    int* res = complex_array_round_to_int(F_C, len);
+    IntCoefType* res = complex_array_round_to_int(F_C, len);
     
 
     //free(poly_a_cd);
@@ -254,12 +256,12 @@ int* multiply_polys_seq_fft(const int* poly_a, const int* poly_b, const int a_le
  *           7 111 110  x   x
  */
 cd* array_par_fft
-    (cd* a_complex_array, int a_complex_len,bool invert,\
+    (cd* a_complex_array, LenType a_complex_len,bool invert,\
         int my_rank,int proc_size) 
 {
 
  
-    int PER_PROC_SIZE = a_complex_len / proc_size;
+    LenType PER_PROC_SIZE = a_complex_len / proc_size;
 
     if (a_complex_len % proc_size) {
         printf("the input length is wrong!\n");
@@ -272,15 +274,15 @@ cd* array_par_fft
         0, MPI_COMM_WORLD);
 
 
-    int cur_fft_step = fft_seq(array_per_proc, PER_PROC_SIZE, invert);
+    LenType cur_fft_step = fft_seq(array_per_proc, PER_PROC_SIZE, invert);
 
 
     unsigned bit_mask = 1;
     int done = 0;
     int partner;
     //每次当前处理器与相邻处理器的间距
-    int proc_step = 2;
-    int half_proc_step = proc_step >> 1;
+    LenType proc_step = 2;
+    LenType half_proc_step = proc_step >> 1;
 
 
     while (!done && bit_mask < proc_size) {
@@ -309,14 +311,14 @@ cd* array_par_fft
     return array_per_proc;
 }
 
-int* multiply_polys_par_mpi_fft
-    (int* poly_a, int* poly_b, int a_len, int b_len, int* c_len,\
+IntCoefType* multiply_polys_par_mpi_fft
+    (IntCoefType* poly_a, IntCoefType* poly_b, LenType a_len, LenType b_len, LenType c_len,\
     int my_rank,int proc_size) 
 {
 
     
    
-        int len = 1;
+    LenType len = 1;
         while (len < a_len + b_len) len <<= 1;
 
         cd* array_a_cd = init_complex_array(poly_a, a_len, len);
@@ -349,15 +351,13 @@ int* multiply_polys_par_mpi_fft
 
     
         if (my_rank == 0) {
-            int* res = complex_array_round_to_int(poly_F_C, len);
+            IntCoefType* res = complex_array_round_to_int(poly_F_C, len);
             return res;
     }
 
 
 
    
-    
-
     return NULL;
 }
 
@@ -377,11 +377,11 @@ int main(int argc, char** argv) {
         return -1;
     }
 
-    int a_len = count_file_line(arr_a_file_ptr);
-    int b_len = count_file_line(arr_b_file_ptr);
-    int c_len = power_2_sum(a_len, b_len);
-    int* array_a = (int*)malloc(sizeof(int) * a_len);
-    int* array_b = (int*)malloc(sizeof(int) * b_len);
+    LenType a_len = count_file_line(arr_a_file_ptr);
+    LenType b_len = count_file_line(arr_b_file_ptr);
+    LenType c_len = power_2_sum(a_len, b_len);
+    IntCoefType* array_a = (IntCoefType*)malloc(sizeof(IntCoefType) * a_len);
+    IntCoefType* array_b = (IntCoefType*)malloc(sizeof(IntCoefType) * b_len);
 
     init_integer_array_from_file(arr_a_file_ptr, array_a, a_len);
     init_integer_array_from_file(arr_b_file_ptr, array_b, b_len);
@@ -405,27 +405,35 @@ int main(int argc, char** argv) {
     //check Sequential in rank 0
     if (my_rank == 0) {
        
-        int* seq_fft_res = multiply_polys_seq_fft(array_a, array_b, a_len, b_len, c_len);
+        IntCoefType* seq_fft_res = multiply_polys_seq_fft(array_a, array_b, a_len, b_len, c_len);
 
-
-        int i = 0;
+        printf("Sequential ANSWER\n");
+        LenType i = 0;
         for (i = 0; i < c_len; i++) {
-            printf("%d  ", seq_fft_res[i]);
+            if (i % 12 == 0)printf("\n");
+            printf("%lld\t", seq_fft_res[i]);
+            
         }
-        printf("\n");
+        printf("\nSequential ANSWER DONE\n");
+        printf("\n\n\n");
     }
     
 
 
 
     //Parallel    
-    int* res = multiply_polys_par_mpi_fft(array_a, array_b, a_len, b_len, &c_len,my_rank,proc_size); 
+    IntCoefType* res = multiply_polys_par_mpi_fft(array_a, array_b, a_len, b_len, c_len,my_rank,proc_size);
     if (my_rank == 0) {
-        int i = 0;
+
+        printf("PARALLEL ANSWER\n");
+        LenType i = 0;
         for (i = 0; i < c_len; i++) {
-            printf("%d  ", res[i]);
+            if (i % 12 == 0)printf("\n");
+            printf("%lld\t", res[i]);
+            
         }
-        printf("\n");
+        printf("\nPARALLEL ANSWER DONE\n");
+        printf("\n\n\n");
     }
 
     MPI_Finalize();
