@@ -357,3 +357,9 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+/MPI/fast_fourei_transform/parallel/MPI_FFT_Clion/cmake-build-debug/CMakeFiles
+/MPI/fast_fourei_transform/parallel/MPI_FFT_Clion/cmake-build-debug/cmake_install.cmake
+/MPI/fast_fourei_transform/parallel/MPI_FFT_Clion/cmake-build-debug/Makefile
+/MPI/fast_fourei_transform/parallel/MPI_FFT_Clion/cmake-build-debug/MPI_FFT_Clion.cbp
+/MPI/fast_fourei_transform/parallel/MPI_FFT_Clion/cmake-build-debug/MPI_FFT_Clion.exe
+/MPI/fast_fourei_transform/parallel/MPI_FFT_Clion/cmake-build-debug
