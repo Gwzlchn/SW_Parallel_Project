@@ -84,7 +84,7 @@ int fft(cd* a, int n, bool invert)
         }
 
     }
-    return len;
+    return len/2;
 }
 
 void init_poly_arr(const int* poly_a, const int* poly_b, int a_len, int b_len,
@@ -150,25 +150,24 @@ int* multiply_polys_seq_fft(const int* poly_a, const int* poly_b, const int a_le
 }
 
 
-int fft_one_step(cd* a, int n,int step,bool invert)
+void fft_one_step(cd* a, int n,int step,bool invert)
 {
 
-    int len = step;
-   // for (len = 2; len <= n; len <<= 1) {
-        double ang = 2 * PI / len * (invert ? -1 : 1);
-        cd wlen(cos(ang), sin(ang));
-        int i = 0;
-        for (i = 0; i < n; i += len) {
-            cd w = 1;
-            int j = 0;
-            for (j = 0; j < len / 2; j++) {
-                cd u = a[i + j], v = a[i + j + len / 2] * w;
-                a[i + j] = u + v;
-                a[i + j + len / 2] = u - v;
-                w *= wlen;
-            }
+    //int len = step;
+    double ang = 2 * PI / step * (invert ? -1 : 1);
+    cd wlen(cos(ang), sin(ang));
+    int i = 0;
+    for (i = 0; i < n; i += step) {
+        cd w = 1;
+        int j = 0;
+        for (j = 0; j < step / 2; j++) {
+            cd u = a[i + j], v = a[i + j + step / 2] * w;
+            a[i + j] = u + v;
+            a[i + j + step / 2] = u - v;
+            w *= wlen;
         }
-   // }
+    }
+
 
     if (invert) {
         int i;
@@ -178,24 +177,74 @@ int fft_one_step(cd* a, int n,int step,bool invert)
 
     }
 
-    return len;
+    return;
 }
 
-void array_par_fft(int* array_a, int len) {
-    cd* array_a_cd = (cd*)malloc(sizeof(cd) * len);
+cd* init_par_array(int* array_a, int a_len, int final_len) {
+    cd* array_a_cd = (cd*)malloc(sizeof(cd) * final_len);
     int i = 0;
-    for (i = 0; i < len; i++) {
+    for (i = 0; i < a_len; i++) {
         array_a_cd[i] = array_a[i];
     }
-    array_bit_reverse(array_a_cd, len);
+    for (i = a_len; i < final_len; i++) {
+        array_a_cd[i] = 0;
+    }
+    array_bit_reverse(array_a_cd, final_len);
+
+    return array_a_cd;
+}
+
+
+
+
+
+/*-----------------------------------------------------------------*/
+/* Function:    Parallel FFT
+ * Purpose:     Compute the FFT of ints stored on the processes
+ *
+ *
+ * Notes:
+ *    1.  Uses tree structured communication.
+ *    2.  proc_size, the number of processes must be a power of 2.
+ *    3.  The return value is valid only on process 0.
+ *    4.  The pairing of the processes is done using bitwise
+ *        exclusive or.  Here's a table showing the rule for
+ *        for bitwise exclusive or
+ *           X Y X^Y
+ *           0 0  0
+ *           0 1  1
+ *           1 0  1
+ *           1 1  0
+ *        Here's a table showing the process pairing with 8
+ *        processes (r = my_rank, other column heads are bitmask)
+ *           r     001 010 100
+ *           -     --- --- ---
+ *           0 000 001 010 100
+ *           1 001 000  x   x
+ *           2 010 011 000  x
+ *           3 011 010  x   x
+ *           4 100 101 110 000
+ *           5 101 100  x   x
+ *           6 110 111 100  x
+ *           7 111 110  x   x
+ */
+
+
+
+void array_par_fft(int* array_a, int a_len) {
+
+    int len = 1;
+    while (len < a_len +1 ) len <<= 1;
+   
+    cd* array_a_cd = init_par_array(array_a, a_len,len);
 
     MPI_Init(NULL, NULL);
-    int rank, size;
+    int my_rank, proc_size;
 
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    MPI_Comm_size(MPI_COMM_WORLD, &size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &proc_size);
    
-    int lg_proc_size = log2_int(size);
+    int lg_proc_size = log2_int(proc_size);
     int lg_arr_len = log2_int(len);
 
     /* create a type for struct complex */
@@ -214,8 +263,8 @@ void array_par_fft(int* array_a, int len) {
 #endif // _MSC_VER
     /* create a type for struct complex  DONE*/
 
-    int PER_PROC_SIZE = len / size;
-    if (len % size) {
+    int PER_PROC_SIZE = len / proc_size;
+    if (len % proc_size) {
         printf("the input length is wrong!\n");
         return;
     }
@@ -225,42 +274,57 @@ void array_par_fft(int* array_a, int len) {
         array_per_proc, PER_PROC_SIZE ,MPI_OWN_COMPLEX_TYPE, \
         0, MPI_COMM_WORLD);
 
-    //fft_one_step(array_a_cd, PER_PROC_SIZE, false);
-
 
     int cur_fft_step = fft(array_per_proc, PER_PROC_SIZE, false);
 
-    int step = 2;
-    for (step = 2; step <= size; step<<=1) {
-        int half_step = step >> 1;
-        if (rank % step != 0) {
-            MPI_Send(array_per_proc, PER_PROC_SIZE * half_step, MPI_OWN_COMPLEX_TYPE, \
-                rank - half_step, 0, MPI_COMM_WORLD);
+    if (my_rank == 0) {
+        printf("%d\n", cur_fft_step);
+    }
 
-            break;
+
+    unsigned bit_mask = 1;
+    int done = 0;
+    int partner;
+    //每次当前处理器与相邻处理器的间距
+    int proc_step = 2;
+    int half_proc_step = proc_step >> 1;
+
+
+    while (!done && bit_mask < proc_size) {
+        partner = my_rank ^ bit_mask;
+        // 接收数据，计算下一轮
+        if (my_rank < partner) {
+            //
+            cd* cur_cd_address = array_per_proc + size_t(PER_PROC_SIZE) * size_t(half_proc_step);
+            MPI_Recv(cur_cd_address, PER_PROC_SIZE * half_proc_step, MPI_OWN_COMPLEX_TYPE, \
+                my_rank + half_proc_step, 0, MPI_COMM_WORLD, MPI_STATUSES_IGNORE);
+            cur_fft_step *= 2;
+            fft_one_step(array_per_proc, PER_PROC_SIZE * proc_step, cur_fft_step, false);
+
+            bit_mask <<= 1;
+            proc_step <<= 1;
+            half_proc_step <<= 1;
         }
+        //发送数据，之后退出
         else {
-            cd* cur_cd_address = array_per_proc + PER_PROC_SIZE * half_step;
-            MPI_Recv(cur_cd_address, PER_PROC_SIZE * half_step, MPI_OWN_COMPLEX_TYPE, \
-                rank + half_step, 0, MPI_COMM_WORLD,MPI_STATUSES_IGNORE);
-            cur_fft_step *= 2; 
-            fft_one_step(array_per_proc, PER_PROC_SIZE * step, cur_fft_step,false);
+            MPI_Send(array_per_proc, PER_PROC_SIZE * half_proc_step, MPI_OWN_COMPLEX_TYPE, \
+                my_rank - half_proc_step, 0, MPI_COMM_WORLD);
+            done = 1;
         }
     }
 
-
-
-
-
-    if (rank == 0) {
-        print_complex_console(array_per_proc, len);
-    }
 
     
 
 
 
-    //array_per_proc = (cd*)
+
+    if (my_rank == 0) {
+        print_complex_console(array_per_proc, len);
+    }
+
+    
+    free(array_per_proc);
 
     MPI_Finalize();
 
@@ -284,48 +348,67 @@ int* multiply_polys_par_mpi_fft(int* poly_a, int* poly_b, int a_len, int b_len, 
     return NULL;
 }
 
+//读取文件行数，并将文件指针指回头部
+int count_file_line(FILE* file_ptr) {
+    int line_count = 0;
+    char ch;
+    while ((ch = fgetc(file_ptr)) != EOF) {
+        if (ch == '\n')
+            line_count++;
+    }
+    rewind(file_ptr);
+    return line_count;
+}
+
+void init_integer_array_from_file(FILE* file_ptr, int* arr,int file_line_cnt) {
+    int i = 0;
+    for (i = 0; i < file_line_cnt; i++) {
+        fscanf(file_ptr, "%d", &arr[i]);
+    }
+}
 
 int main(int argc, char** argv) {
 
+    //第一个输入参数是A数组文件
+    argv[1] = "array_a_in.txt";
+    argv[2] = "array_b_in.txt";
+    FILE* arr_a_file_ptr,*arr_b_file_ptr;
+    arr_a_file_ptr = fopen(argv[1], "r");
+    arr_b_file_ptr = fopen(argv[2], "r");
 
-    int a[] = { 1, 2, 3, 4, 5, 6, 7, 8 };
-    int b[] = { 1, 2, 3, 4, 5, 6, 7, 8 };
-    int a_len = sizeof(a) / sizeof(a[0]);
-    int b_len = sizeof(b) / sizeof(b[0]);
-    int c_len = 0;
-    int* seq_fft_res = multiply_polys_seq_fft(a, b, a_len, b_len, &c_len);
-
-    int i = 0;
-    for (i = 0; i < c_len; i++) {
-       // printf("%d  ", seq_fft_res[i]);
-    }
-
-    argv[1] = "array_in.txt";
-    if (argv[1] == NULL) {
-        
+    if (!arr_a_file_ptr || !arr_b_file_ptr) {
+        printf("NO INOUT FILE!\n");
         return 0;
     }
 
-    int par_size = 0;
-    FILE* arr_file;
-    arr_file = fopen(argv[1], "r");
+    int a_len = count_file_line(arr_a_file_ptr);
+    int b_len = count_file_line(arr_b_file_ptr);
 
-    if (arr_file) {
-        fscanf(arr_file, "%d", &par_size);
-        int* par_arr = (int*)malloc(sizeof(int) * par_size);
+    int* array_a = (int*)malloc(sizeof(int) * a_len);
+    int* array_b = (int*)malloc(sizeof(int) * b_len);
+
+    init_integer_array_from_file(arr_a_file_ptr, array_a, a_len);
+    init_integer_array_from_file(arr_b_file_ptr, array_b, b_len);
 
 
-        //i = 0;
-        for (i = 0; i < par_size; i++) {
-            fscanf(arr_file, "%d", &par_arr[i]);
-        }
 
-        array_par_fft(par_arr, par_size);
+    //Sequential
+    int c_len = 0;
+    int* seq_fft_res = multiply_polys_seq_fft(array_a, array_b, a_len, b_len, &c_len);
+
+    int i = 0;
+    for (i = 0; i < c_len; i++) {
+       printf("%d  ", seq_fft_res[i]);
+    }
+
+  
+   
+
+       
+    //Parallel
+    array_par_fft(array_a,a_len);
         
-    }
-    else {
-        printf("NO INOUT FILE!\n");
-    }
+    
     
 
 

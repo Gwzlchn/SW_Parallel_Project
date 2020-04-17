@@ -9,7 +9,7 @@
  * Run:      mpiexec -n <number of processes> global_sum
  *
  * Notes:     
- *    1.  p, the number of processes, must be a power of 2.
+ *    1.  proc_size, the number of processes, must be a power of 2.
  *    2.  The result is valid only on process 0.
  */
 #include <stdio.h>
@@ -18,23 +18,23 @@
 
 const int MAX_CONTRIB = 10;
 
-int Global_sum(int my_contrib, int my_rank, int p, MPI_Comm comm);
+int Global_sum(int my_contrib, int my_rank, int proc_size, MPI_Comm comm);
 
 int main(int argc, char* argv[]) {
-   int      p, my_rank;
+   int      proc_size, my_rank;
    MPI_Comm comm;
    int      my_contrib;
    int      sum;
 
    MPI_Init(&argc, &argv);
    comm = MPI_COMM_WORLD;
-   MPI_Comm_size(comm, &p);
+   MPI_Comm_size(comm, &proc_size);
    MPI_Comm_rank(comm, &my_rank);
 
    srandom(my_rank+1);
    my_contrib = random() % MAX_CONTRIB;
    printf("Proc %d > my_contrib = %d\n", my_rank, my_contrib);
-   sum = Global_sum(my_contrib, my_rank, p, comm);
+   sum = Global_sum(my_contrib, my_rank, proc_size, comm);
    if (my_rank == 0)
       printf("Proc %d > global sum = %d\n", my_rank, sum);
 
@@ -48,14 +48,14 @@ int main(int argc, char* argv[]) {
  *
  * Input args:  my_contrib = process's contribution to the global sum
  *              my_rank = process's rank
- *              p = number of processes
+ *              proc_size = number of processes
  *              comm = communicator
  * Return val:  Sum of each process's my_contrib:  valid only
  *              on process 0.
  *
  * Notes:
  *    1.  Uses tree structured communication.
- *    2.  p, the number of processes must be a power of 2.
+ *    2.  proc_size, the number of processes must be a power of 2.
  *    3.  The return value is valid only on process 0.
  *    4.  The pairing of the processes is done using bitwise
  *        exclusive or.  Here's a table showing the rule for
@@ -78,7 +78,7 @@ int main(int argc, char* argv[]) {
  *           6 110 111 100  x
  *           7 111 110  x   x
  */
-int Global_sum(int my_contrib, int my_rank, int p, MPI_Comm comm) {
+int Global_sum(int my_contrib, int my_rank, int proc_size, MPI_Comm comm) {
     int        sum = my_contrib;
     int        temp;
     int        partner;
@@ -86,7 +86,7 @@ int Global_sum(int my_contrib, int my_rank, int p, MPI_Comm comm) {
     unsigned   bitmask = 1;
     MPI_Status status;
 
-    while (!done && bitmask < p) {
+    while (!done && bitmask < proc_size) {
         partner = my_rank ^ bitmask;
         if (my_rank < partner) {
             MPI_Recv(&temp, 1, MPI_INT, partner, 0, comm, &status);
