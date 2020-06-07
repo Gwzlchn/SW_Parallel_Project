@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="PASSWORD" id="1bd2fac0-3361-45ef-8c11-a85f5f048622" customName="Sunway" nameFormat="CUSTOM" />
+    </configs>
+  </component>
+</project>

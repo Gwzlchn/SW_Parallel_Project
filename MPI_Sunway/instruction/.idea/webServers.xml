@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="eb116955-8eea-49e1-87f7-4374c94aec60" name="Sunway SFTP">
+        <fileTransfer rootFolder="/home/export/online1/taskScheduler/bysj20/wangzl" accessType="SFTP" host="41.0.0.188" port="22" sshConfigId="0569c7b6-fca2-49c3-8517-05cbe125cd0b" sshConfig="Sunway">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

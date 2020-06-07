@@ -1,0 +1,243 @@
+	.file	"main.c"
+	.text
+	.def	__main;	.scl	2;	.type	32;	.endef
+	.section .rdata,"dr"
+.LC3:
+	.ascii "BEGIN ADD REGISTER\0"
+	.align 8
+.LC4:
+	.ascii "start cycle %ld,\11end cycle %ld\11\11\0"
+.LC5:
+	.ascii "overhead:%ld\12\0"
+.LC6:
+	.ascii "END ADD REGISTER\0"
+.LC7:
+	.ascii "BEGIN MULTIPLY REGISTER\0"
+.LC9:
+	.ascii "END MULTIPLY REGISTER\0"
+.LC11:
+	.ascii "BEGIN Complex REGISTER\0"
+.LC12:
+	.ascii "END Complex REGISTER\0"
+	.text
+	.globl	main
+	.def	main;	.scl	2;	.type	32;	.endef
+	.seh_proc	main
+main:
+	pushq	%rbp
+	.seh_pushreg	%rbp
+	movq	%rsp, %rbp
+	.seh_setframe	%rbp, 0
+	subq	$192, %rsp
+	.seh_stackalloc	192
+	.seh_endprologue
+	movl	%ecx, 16(%rbp)
+	movq	%rdx, 24(%rbp)
+	call	__main
+	movsd	.LC1(%rip), %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	.LC0(%rip), %xmm0
+	movsd	%xmm0, -32(%rbp)
+	pxor	%xmm0, %xmm0
+	movsd	%xmm0, -48(%rbp)
+	movl	$0, -36(%rbp)
+	leaq	.LC3(%rip), %rcx
+	call	puts
+	movl	$0, -36(%rbp)
+	jmp	.L2
+.L3:
+	movsd	-24(%rbp), %xmm0
+	addsd	%xmm0, %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-32(%rbp), %xmm0
+	addsd	%xmm0, %xmm0
+	movsd	%xmm0, -32(%rbp)
+	leaq	-116(%rbp), %rax
+	movq	%rax, %rcx
+	call	rpcc_
+	movsd	-24(%rbp), %xmm0
+	addsd	-32(%rbp), %xmm0
+	movsd	%xmm0, -48(%rbp)
+	leaq	-120(%rbp), %rax
+	movq	%rax, %rcx
+	call	rpcc_
+	movl	-120(%rbp), %edx
+	movl	-116(%rbp), %eax
+	movl	%edx, %r8d
+	movl	%eax, %edx
+	leaq	.LC4(%rip), %rcx
+	call	printf
+	movl	-120(%rbp), %edx
+	movl	-116(%rbp), %eax
+	subl	%eax, %edx
+	movl	%edx, %eax
+	movl	%eax, %edx
+	leaq	.LC5(%rip), %rcx
+	call	printf
+	movl	$0, -120(%rbp)
+	movl	-120(%rbp), %eax
+	movl	%eax, -116(%rbp)
+	addl	$1, -36(%rbp)
+.L2:
+	cmpl	$3, -36(%rbp)
+	jle	.L3
+	leaq	.LC6(%rip), %rcx
+	call	puts
+	leaq	.LC7(%rip), %rcx
+	call	puts
+	movl	$0, -36(%rbp)
+	jmp	.L4
+.L5:
+	movsd	-24(%rbp), %xmm1
+	movsd	.LC8(%rip), %xmm0
+	mulsd	%xmm1, %xmm0
+	movsd	%xmm0, -24(%rbp)
+	movsd	-32(%rbp), %xmm1
+	movsd	.LC8(%rip), %xmm0
+	mulsd	%xmm1, %xmm0
+	movsd	%xmm0, -32(%rbp)
+	leaq	-116(%rbp), %rax
+	movq	%rax, %rcx
+	call	rpcc_
+	movsd	-24(%rbp), %xmm0
+	mulsd	-32(%rbp), %xmm0
+	movsd	%xmm0, -48(%rbp)
+	leaq	-120(%rbp), %rax
+	movq	%rax, %rcx
+	call	rpcc_
+	movl	-120(%rbp), %edx
+	movl	-116(%rbp), %eax
+	movl	%edx, %r8d
+	movl	%eax, %edx
+	leaq	.LC4(%rip), %rcx
+	call	printf
+	movl	-120(%rbp), %edx
+	movl	-116(%rbp), %eax
+	subl	%eax, %edx
+	movl	%edx, %eax
+	movl	%eax, %edx
+	leaq	.LC5(%rip), %rcx
+	call	printf
+	movl	$0, -120(%rbp)
+	movl	-120(%rbp), %eax
+	movl	%eax, -116(%rbp)
+	addl	$1, -36(%rbp)
+.L4:
+	cmpl	$3, -36(%rbp)
+	jle	.L5
+	leaq	.LC9(%rip), %rcx
+	call	puts
+	movsd	.LC1(%rip), %xmm0
+	movsd	%xmm0, -64(%rbp)
+	movsd	.LC0(%rip), %xmm0
+	movsd	%xmm0, -56(%rbp)
+	movsd	.LC0(%rip), %xmm0
+	movsd	%xmm0, -80(%rbp)
+	movsd	.LC10(%rip), %xmm0
+	movsd	%xmm0, -72(%rbp)
+	pxor	%xmm0, %xmm0
+	movsd	%xmm0, -96(%rbp)
+	pxor	%xmm0, %xmm0
+	movsd	%xmm0, -88(%rbp)
+	leaq	.LC11(%rip), %rcx
+	call	puts
+	movl	$0, -36(%rbp)
+	movsd	.LC0(%rip), %xmm0
+	movsd	%xmm0, -16(%rbp)
+	movsd	.LC1(%rip), %xmm0
+	movsd	%xmm0, -8(%rbp)
+	jmp	.L6
+.L7:
+	movsd	-8(%rbp), %xmm1
+	movsd	.LC8(%rip), %xmm0
+	mulsd	%xmm1, %xmm0
+	movsd	%xmm0, -8(%rbp)
+	movsd	-16(%rbp), %xmm1
+	movsd	.LC8(%rip), %xmm0
+	mulsd	%xmm1, %xmm0
+	movsd	%xmm0, -16(%rbp)
+	movsd	-16(%rbp), %xmm0
+	movsd	-8(%rbp), %xmm1
+	movsd	%xmm1, -64(%rbp)
+	movsd	%xmm0, -56(%rbp)
+	movsd	-8(%rbp), %xmm1
+	movsd	.LC8(%rip), %xmm0
+	mulsd	%xmm0, %xmm1
+	movsd	-16(%rbp), %xmm2
+	movsd	.LC8(%rip), %xmm0
+	mulsd	%xmm2, %xmm0
+	movsd	%xmm1, -64(%rbp)
+	movsd	%xmm0, -56(%rbp)
+	movsd	%xmm1, -8(%rbp)
+	movsd	%xmm0, -16(%rbp)
+	leaq	-116(%rbp), %rax
+	movq	%rax, %rcx
+	call	rpcc_
+	leaq	-144(%rbp), %rax
+	movsd	.LC0(%rip), %xmm3
+	movsd	-16(%rbp), %xmm2
+	movsd	-8(%rbp), %xmm1
+	movsd	.LC10(%rip), %xmm0
+	movsd	%xmm0, 32(%rsp)
+	movq	%rax, %rcx
+	call	__muldc3
+	movsd	-144(%rbp), %xmm0
+	movsd	%xmm0, -96(%rbp)
+	movsd	-136(%rbp), %xmm0
+	movsd	%xmm0, -88(%rbp)
+	movsd	-96(%rbp), %xmm0
+	movsd	%xmm0, -104(%rbp)
+	movsd	-88(%rbp), %xmm0
+	movsd	%xmm0, -112(%rbp)
+	leaq	-120(%rbp), %rax
+	movq	%rax, %rcx
+	call	rpcc_
+	movl	-120(%rbp), %edx
+	movl	-116(%rbp), %eax
+	movl	%edx, %r8d
+	movl	%eax, %edx
+	leaq	.LC4(%rip), %rcx
+	call	printf
+	movl	-120(%rbp), %edx
+	movl	-116(%rbp), %eax
+	subl	%eax, %edx
+	movl	%edx, %eax
+	movl	%eax, %edx
+	leaq	.LC5(%rip), %rcx
+	call	printf
+	movl	$0, -120(%rbp)
+	movl	-120(%rbp), %eax
+	movl	%eax, -116(%rbp)
+	addl	$1, -36(%rbp)
+.L6:
+	cmpl	$3, -36(%rbp)
+	jle	.L7
+	leaq	.LC12(%rip), %rcx
+	call	puts
+	movl	$0, %eax
+	addq	$192, %rsp
+	popq	%rbp
+	ret
+	.seh_endproc
+	.section .rdata,"dr"
+	.align 8
+.LC0:
+	.long	0
+	.long	1073741824
+	.align 8
+.LC1:
+	.long	0
+	.long	1072693248
+	.align 8
+.LC8:
+	.long	0
+	.long	1093664768
+	.align 8
+.LC10:
+	.long	0
+	.long	1074790400
+	.ident	"GCC: (x86_64-posix-seh-rev0, Built by MinGW-W64 project) 8.1.0"
+	.def	puts;	.scl	2;	.type	32;	.endef
+	.def	rpcc_;	.scl	2;	.type	32;	.endef
+	.def	printf;	.scl	2;	.type	32;	.endef
+	.def	__muldc3;	.scl	2;	.type	32;	.endef

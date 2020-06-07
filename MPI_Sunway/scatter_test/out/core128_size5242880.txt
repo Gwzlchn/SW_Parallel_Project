@@ -1,0 +1,1 @@
+23184874				root proc pointer size is 80 MBytes 

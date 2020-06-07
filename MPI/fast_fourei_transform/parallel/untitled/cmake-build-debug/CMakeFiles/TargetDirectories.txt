@@ -1,0 +1,3 @@
+D:/Users/Zelin/Desktop/Sunway/code/MPI/fast_fourei_transform/parallel/untitled/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/Users/Zelin/Desktop/Sunway/code/MPI/fast_fourei_transform/parallel/untitled/cmake-build-debug/CMakeFiles/untitled.dir
+D:/Users/Zelin/Desktop/Sunway/code/MPI/fast_fourei_transform/parallel/untitled/cmake-build-debug/CMakeFiles/rebuild_cache.dir

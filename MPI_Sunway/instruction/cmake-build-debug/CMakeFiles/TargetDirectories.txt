@@ -1,0 +1,3 @@
+D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/instruction/cmake-build-debug/CMakeFiles/instruction.dir
+D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/instruction/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/instruction/cmake-build-debug/CMakeFiles/rebuild_cache.dir

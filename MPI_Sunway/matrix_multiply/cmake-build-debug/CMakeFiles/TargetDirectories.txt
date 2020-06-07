@@ -1,0 +1,3 @@
+D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/matrix_multiply/cmake-build-debug/CMakeFiles/matrix_multiply.dir
+D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/matrix_multiply/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/matrix_multiply/cmake-build-debug/CMakeFiles/rebuild_cache.dir

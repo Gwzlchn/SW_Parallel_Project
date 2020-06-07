@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="b84c7261-1b74-40de-ad1f-9c95cead3216" name="Sunway" url="">
+        <fileTransfer rootFolder="/home/export/base/swyf/taskScheduler" accessType="SFTP" host="41.0.0.188" port="22" sshConfigId="0569c7b6-fca2-49c3-8517-05cbe125cd0b" sshConfig="taskScheduler@41.0.0.188:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
