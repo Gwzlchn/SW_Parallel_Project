@@ -3,13 +3,13 @@
 #include <complex.h>
 #include <stdlib.h>
 #include <mpi.h>
+#include <stddef.h>
 //#include "swlu.h"
 //#include "mpi.h"
 #define GET_CYCLE(x) asm volatile ("rtc %0": "=r" (x));
 #define ull unsigned long long
 #define ul unsigned long
 #define N 1024
-
 
 
 void fill_int_mat(int* arr[],ull length){
@@ -34,6 +34,41 @@ void fill_int_arr(int* arr,ull length){
 
 enum bool{false,true};
 
+typedef struct  MPI_TEST_STRUCT{
+    double a,b,c,d,e,f,g,h;
+    double i,j,k,l,m,n,o,p;
+}MPI_TEST_STRUCT;
+
+/* create a type for struct complex */
+MPI_Datatype create_MPI_type()
+{
+    const int nitems = 16;
+    int          blocklengths[16] = { 1,1, 1,1, 1,1, 1,1, 1,1, 1,1, 1,1, 1,1 };
+    MPI_Datatype types[16] = { MPI_DOUBLE, MPI_DOUBLE,MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE };
+    MPI_Datatype MPI_OWN_STRUCT_TYPE;
+    MPI_Aint     offsets[16];
+    offsets[0] = offsetof(MPI_TEST_STRUCT, a);
+    offsets[1] = offsetof(MPI_TEST_STRUCT, b);
+    offsets[2] = offsetof(MPI_TEST_STRUCT, c);
+    offsets[3] = offsetof(MPI_TEST_STRUCT, d);
+    offsets[4] = offsetof(MPI_TEST_STRUCT, e);
+    offsets[5] = offsetof(MPI_TEST_STRUCT, f);
+    offsets[6] = offsetof(MPI_TEST_STRUCT, g);
+    offsets[7] = offsetof(MPI_TEST_STRUCT, h);
+    offsets[8] = offsetof(MPI_TEST_STRUCT, i);
+    offsets[9] = offsetof(MPI_TEST_STRUCT, j);
+    offsets[10] = offsetof(MPI_TEST_STRUCT, k);
+    offsets[11] = offsetof(MPI_TEST_STRUCT, l);
+    offsets[12] = offsetof(MPI_TEST_STRUCT, m);
+    offsets[13] = offsetof(MPI_TEST_STRUCT, n);
+    offsets[14] = offsetof(MPI_TEST_STRUCT, o);
+    offsets[15] = offsetof(MPI_TEST_STRUCT, p);
+
+    MPI_Type_create_struct(nitems, blocklengths, offsets, types, &MPI_OWN_STRUCT_TYPE);
+    MPI_Type_commit(&MPI_OWN_STRUCT_TYPE);
+
+    return MPI_OWN_STRUCT_TYPE;
+}
 
 
 // 根节点打印堆上的指针占用空间
@@ -43,6 +78,7 @@ void print_root_memory_used(ull bytes, int my_rank) {
     ull KB = 1024;
     ull MB = 1024 * 1024;
     ull GB = 1024 * 1024 * 1024;
+    printf("root proc ");
     if (bytes <= KB) {
         printf("pointer size is %lld Bytes \n", bytes);
     }
@@ -57,8 +93,6 @@ void print_root_memory_used(ull bytes, int my_rank) {
     }
     return;
 
-
-
 }
 
 
@@ -69,54 +103,57 @@ int main(int argc, char** argv) {
     MPI_Comm_size(MPI_COMM_WORLD, &proc_size);
 
 
+    MPI_Datatype MPI_OWN_STRUCT_TYPE = create_MPI_type();
 
+    // 根节点数据量
+    int cur_root_len = atoi(argv[1]);
+    int cur_root_size = sizeof(double complex)*cur_root_len;
+    double complex* array ;
+    int per_proc_size = cur_root_size/proc_size;
+    int per_proc_len = cur_root_len/proc_size;
 
-    for(int i=1;i<=32;i++){
-        ull cur_size = 1<<i;
-        int* array = (int*)malloc(sizeof(int)*cur_size);
-        int* remote_array = (int*)malloc(sizeof(int)*cur_size);
+    double complex* per_proc_array = (double complex*)malloc(per_proc_size);
+    array = (double complex*)malloc(cur_root_size);
+    if(my_rank==0){
 
-        if(array==0 || remote_array==0){
+        if(array==0 || per_proc_array==0){
             printf("not enough\n");
-            return 0;
+            MPI_Abort(MPI_COMM_WORLD,99);
+            //return 0;
         }
-        fill_int_arr(array,cur_size);
-        ul start_cycle=0,end_cycle=0;
-        asm volatile ("rtc %0": "=r" (start_cycle));
-        if(my_rank==0)
-            MPI_Send(array,cur_size,MPI_INT,1,0,MPI_COMM_WORLD);
-        if(my_rank==1)
-            MPI_Recv(remote_array,cur_size,MPI_INT,0,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
-        asm volatile ("rtc %0": "=r" (end_cycle));
-
-        ul overhead = end_cycle - start_cycle;
-
-        if(my_rank==0){
-            printf("%ld\t\t\t\t",overhead);
+        if( per_proc_len%proc_size != 0){
+            printf("not match\n");
+            MPI_Abort(MPI_COMM_WORLD,22);
         }
-        print_root_memory_used(sizeof(int)*cur_size,my_rank);
-        free(array);
-        free(remote_array);
-        MPI_Barrier(MPI_COMM_WORLD);
     }
 
 
+    ul start_cycle=0,end_cycle=0;
+
+    MPI_Barrier(MPI_COMM_WORLD);
+
+    asm volatile ("rtc %0": "=r" (start_cycle));
+    MPI_Scatter(array,per_proc_len,MPI_C_DOUBLE_COMPLEX,\
+                per_proc_array,per_proc_len,MPI_C_DOUBLE_COMPLEX,0,MPI_COMM_WORLD);
+    asm volatile ("rtc %0": "=r" (end_cycle));
 
 
-//    int elements_per_proc = N/proc_size;
-//    int* sub_array= (int*)malloc(sizeof(int)*elements_per_proc);
-//    asm volatile ("rtc %0": "=r" (start_cycle));
-//    MPI_Scatter(array,elements_per_proc,MPI_INT,\
-//                sub_array,elements_per_proc,MPI_INT,0,MPI_COMM_WORLD);
-//    asm volatile ("rtc %0": "=r" (end_cycle));
-//
-//
-//    overhead = end_cycle - start_cycle;
-//
-//    if(my_rank==0){
-//        printf("%ld\n",overhead);
-//        printf("%ld\n",sizeof(int)*N);
-//    }
-//    return 0;
+    MPI_Barrier(MPI_COMM_WORLD);
+
+    ul overhead = end_cycle - start_cycle;
+
+    if(my_rank==0){
+        //输出消耗的周期
+        printf("%ld\t\t\t\t",overhead);
+        //free(array);
+    }
+    // 输出根节点调度的总数据量
+    print_root_memory_used(cur_root_size,my_rank);
+
+    //free(per_proc_array);
+    MPI_Finalize();
+
+
+    return 0;
 
 }

@@ -1,0 +1,16 @@
+
+-----------------BEGIN TIMER----------------
+
+sort data locally and find splitters cycle	 165963620
+gather all splitters cycle			 7428546
+root splitters sort cycle			 407714068
+cast all splitters cycle			 78385
+inner proc dispatch cycle			 390863
+all to all commute cycle			 61389764
+inner proc sort cycle				 171305208
+gather all proc to root cycle			 44282241
+
+total cycle cost				 1087043584
+
+-----------------END   TIMER----------------
+

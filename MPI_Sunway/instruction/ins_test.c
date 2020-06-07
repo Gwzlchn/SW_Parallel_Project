@@ -1,145 +1,157 @@
 
 #include <stdio.h>
 #include <complex.h>
+#include <stdlib.h>
+#include <mpi.h>
 //#include "swlu.h"
 //#include "mpi.h"
 #define GET_CYCLE(x) asm volatile ("rtc %0": "=r" (x));
 #define ull unsigned long long
 #define ul unsigned long
-#define N 102400
+#define N 1024
 
-int a_array[N];
+
+
+void fill_int_mat(int* arr[],ull length){
+    ull i=0;
+    for(;i<length;i++){
+        for(ull j=0;j<length;j++){
+            arr[i][j] = i*j;
+        }
+    }
+    return;
+}
 
 void fill_int_arr(int* arr,ull length){
     ull i=0;
     for(;i<length;i++){
-        arr[i] = (int)(i*i);
+
+            arr[i] = i+1;
+
     }
     return;
 }
 
 enum bool{false,true};
-enum bool copyFile( const char * srcFile , const char * destFile )
-{
-    FILE * src , * dst ;
-    if( NULL == srcFile || NULL == destFile )
-    {
-        printf("copyFile src or dest file null !\n");
-        return false;
+
+
+
+// 根节点打印堆上的指针占用空间
+void print_root_memory_used(ull bytes, int my_rank) {
+    if (my_rank != 0) return;
+   // ull bytes = _msize(ptr);
+    ull KB = 1024;
+    ull MB = 1024 * 1024;
+    ull GB = 1024 * 1024 * 1024;
+    if (bytes <= KB) {
+        printf("pointer size is %lld Bytes \n", bytes);
     }
-    src = fopen( srcFile , "rb" );
-    dst = fopen( destFile, "wb" );
-    if( NULL == src || NULL == dst )
-    {
-        printf("copyFile fopen failed !\n");
-        return false;
+    else if (bytes > KB && bytes <= (MB)) {
+        printf("pointer size is %lld KBytes \n", bytes / KB);
     }
-    // copy file
-    char buf;
-    while( fread( &buf , sizeof(char) , 1 , src ) != 0 )
-    {
-        // write to dst file !
-        fwrite( &buf , sizeof(char) , 1 , dst );
+    else if (bytes > MB && bytes <= (GB)) {
+        printf("pointer size is %lld MBytes \n", bytes / MB);
     }
-    // don't forget to close the files
-    fclose( src );
-    fclose( dst );
-    return true;
+    else if (bytes > GB) {
+        printf("pointer size is %lld GBytes \n", bytes / GB);
+    }
+    return;
+
+
+
 }
 
 
-
-
 int main(int argc, char** argv) {
-    volatile  double a = 1.0;
-    volatile double b = 2.0;
+    MPI_Init(NULL,NULL);
+    int my_rank=0,proc_size=0;
+    MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &proc_size);
 
 
-    fill_int_arr(a_array,N);
+    ul start_cycle=0,end_cycle=0;
+    double a=1,b=1;
+    ul overhead = 0;
+    int times = 32;
 
-    ull i=0;
-    ull times = 10;
-
-
-    printf("BEGIN add  numbers\n");
-    //MPI_Init(&argc,&argv);
-    //swlu_prof_init();
-    //swlu_prof_start();
-    for(i=0;i<times;i++){
-        a *= 1.1;
-        b *= 1.1;
-
-       ul st_cycle=0,ed_cycle=0;
-        GET_CYCLE(st_cycle)
+    // 加法指令开销
+    for(int i=0;i<times;i++){
+        asm volatile ("rtc %0": "=r" (start_cycle));
         volatile double c = a+b;
-
-        GET_CYCLE(ed_cycle)
-
-        //printf("start cycle %ld,\tend cycle %ld\t\t",st_cycle,ed_cycle);
-
-        unsigned long overhead = ed_cycle-st_cycle;
-        printf("add two number overhead:%ld\n",overhead);
-
-        //printf("current k:%lf\n",k);
-
-        //unsigned long overhead_clock = ed_clk - st_clk;
-        //printf("overhead clock: %ld\n",overhead_clock);
-        st_cycle = ed_cycle = 0;
+        asm volatile ("rtc %0": "=r" (end_cycle));
+        overhead += end_cycle - start_cycle;
+    }
+    if(my_rank==0){
+        printf("%ld\n",overhead/times);
     }
 
 
-    printf("END ADD  numbers\n\n");
 
-    //swlu_prof_stop();
-    //swlu_prof_print();
-
-
-
-
-
-
-    printf("BEGIN MULTIPLY two numbers\n");
-    a = b = 0;
-    for(i=0;i<times;i++){
-        a = a_array[i*32];
-        b = a_array[i*64];
-
-        ul st_cycle = 0,ed_cycle=0;
-        GET_CYCLE(st_cycle)
-        volatile double  c = a*b;
-        GET_CYCLE(ed_cycle)
-
-        //printf("start cycle %ld,\tend cycle %ld\t\t",st_cycle,ed_cycle);
-        unsigned long overhead = ed_cycle-st_cycle;
-        printf("overhead:%ld\n",overhead);
-        //printf("current c:%lf\n",c);
-        volatile double k = c*2+a;
-
+    // 乘法指令开销
+    for(int i=0;i<times;i++){
+        asm volatile ("rtc %0": "=r" (start_cycle));
+        volatile double c = a*b;
+        asm volatile ("rtc %0": "=r" (end_cycle));
+        overhead += end_cycle - start_cycle;
     }
-    printf("END MULTIPLY two numbers\n\n");
-
-
-
-
-
-    printf("BEGIN Memory\n");
-    for(i=times;i>0;i--){
-
-        ul st_cycle=0,ed_cycle=0;
-        GET_CYCLE(st_cycle)
-        volatile double c = a_array[i] + a_array[i*4096];
-        GET_CYCLE(ed_cycle)
-
-        //printf("start cycle %ld,\tend cycle %ld\t\t",st_cycle,ed_cycle);
-        unsigned long overhead = ed_cycle-st_cycle;
-        printf("overhead:%ld\n",overhead);
-        //printf("current c  :%lf\n",c);
-        st_cycle = ed_cycle = 0;
+    if(my_rank==0){
+        printf("%ld\n",overhead/times);
     }
-    printf("END Memory\n\n");
 
-    
-    //MPI_Finalize();
+
+    // 访存指令单位开销
+    //初始化矩阵，在堆上申请内存
+    int** matrix = (int**)malloc(sizeof(int*)*N);
+    for(int i=0;i<N;i++){
+        matrix[i] = (int*)malloc(sizeof(int)*N);
+    }
+    fill_int_mat(matrix,N);
+    for(int i=0;i<times;i++){
+        int random_int = rand()%N;
+        int* current_row = matrix[random_int];
+        asm volatile ("rtc %0": "=r" (start_cycle));
+        volatile double c = current_row[random_int];
+        asm volatile ("rtc %0": "=r" (end_cycle));
+        overhead += end_cycle - start_cycle;
+    }
+
+    if(my_rank==0){
+        printf("%ld\n",overhead/times);
+    }
+
+
+
+    // 通信指令单位开销
+    for(int i=1;i<=32;i++){
+        ull cur_size = 1<<i;
+        int* array = (int*)malloc(sizeof(int)*cur_size);
+        int* remote_array = (int*)malloc(sizeof(int)*cur_size);
+
+        if(array==0 || remote_array==0){
+            printf("not enough\n");
+            return 0;
+        }
+        fill_int_arr(array,cur_size);
+        ul start_cycle=0,end_cycle=0;
+        asm volatile ("rtc %0": "=r" (start_cycle));
+        if(my_rank==0)
+            MPI_Send(array,cur_size,MPI_INT,1,0,MPI_COMM_WORLD);
+        if(my_rank==1)
+            MPI_Recv(remote_array,cur_size,MPI_INT,0,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+        asm volatile ("rtc %0": "=r" (end_cycle));
+
+        ul overhead = end_cycle - start_cycle;
+
+        if(my_rank==0){
+            printf("%ld\t\t\t\t",overhead);
+        }
+        print_root_memory_used(sizeof(int)*cur_size,my_rank);
+        free(array);
+        free(remote_array);
+        MPI_Barrier(MPI_COMM_WORLD);
+    }
+
+
 
 
     return 0;

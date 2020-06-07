@@ -1,5 +1,16 @@
-for i in {1..10}
+
+for cores in {4,16,128,256,512,1024}
 do
-  bsub -b -I  -q q_sw_share -N 2 -cgsp 64 -host_stack 5000 -share_size 4096 ./ins_test
+  for test_time in {1..10}
+  do
+    # shellcheck disable=SC2219
+    let sizes=$cores*$test_time*10240
+    cur_out=out/core"$cores"_size"$sizes".txt
+
+    bsub -o $cur_out  -q q_sw_share -N $cores  -host_stack 256 -share_size 6000 ./scatter_test  $sizes
+    #echo core"$cores"_size"$sizes"
+  done
 done
-bsub -b -I -pr -q q_sw_expr -n 2  -allmaster -host_stack0 256 -cross_size0 10000 -host_stack 256 -cross_size 2500 ./ins_test
+
+
+

@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Program Files (x86)/Microsoft SDKs/MPI/Include/mpi.h
+stdint.h
+-
+sal.h
+-
+stdint.h
+-
+
+D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/prefix_sum/prefix_sum_MPI.c
+stdio.h
+-
+stdlib.h
+-
+mpi.h
+-
+time.h
+-
+

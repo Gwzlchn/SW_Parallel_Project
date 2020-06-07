@@ -14,6 +14,12 @@ typedef unsigned short MatType;
 typedef unsigned long long ull;
 typedef unsigned long ul;
 #define MPI_COMM_TYPE MPI_UNSIGNED_SHORT
+
+// 计数变量
+ull root_node_add_times = 0;
+ull root_node_multiply_times = 0;
+ull root_node_mem_times = 0;
+
 //对row行col列矩阵初始化
 void init_matrix_random(MatType* matrix, ull rows, ull cols)
 {
@@ -33,8 +39,12 @@ void matrix_multiply(MatType* A, MatType* B, MatType* mat_res,
             MatType res = 0;
             for (k = 0; k < A_cols; k++) {
                 res += A[i * A_cols + k] * B[k * B_cols + j];
+                root_node_add_times+=2;
+                root_node_multiply_times+=3;
+                root_node_mem_times+=2;
             }
             mat_res[i * B_cols + j] = res;
+            root_node_mem_times++;
         }
     }
 }
@@ -171,41 +181,49 @@ int main(int argc, char* argv[])
         printf("Gather DONE\n");
     }
     if (my_rank == 0) {
-        printf("board and scatter time %f\n", board_time_ed - board_time_st);
-        printf("multiply time %f\n", mul_time_ed - mul_time_st);
-        printf("gather time %f\n", gather_time_ed - gather_time_st);
+        printf("-------------------BEGIN TIMER------------------------------\n\n");
+        printf("board and scatter time\t\t\t %f\n", board_time_ed - board_time_st);
+        printf("multiply time\t\t\t\t %f\n", mul_time_ed - mul_time_st);
+        printf("gather time\t\t\t\t %f\n", gather_time_ed - gather_time_st);
 
-        printf("totally cost %f\n", gather_time_ed - board_time_st);
+        printf("totally cost time\t\t\t %f\n\n", gather_time_ed - board_time_st);
 
 
-        printf("board and scatter cycle %ld\n", board_cycle_ed - board_cycle_st);
-        printf("multiply cycle %ld\n", mul_cycle_ed - mul_cycle_st);
-        printf("gather cycle %ld\n", gather_cycle_ed - gather_cycle_st);
+        printf("board and scatter cycle\t\t\t %ld\n", board_cycle_ed - board_cycle_st);
+        printf("multiply cycle\t\t\t\t %ld\n", mul_cycle_ed - mul_cycle_st);
+        printf("gather cycle\t\t\t\t %ld\n", gather_cycle_ed - gather_cycle_st);
 
         ul total_cycle = gather_cycle_ed - board_cycle_st;
-        printf("totally cycle %ld\n", total_cycle);
+        printf("totally cost cycle\t\t\t %ld\n\n", total_cycle);
         //printf("total cycle time: %lf\n",total_cycle/CPU_)
+        printf("-------------------END TIMER------------------------------\n\n");
 
+
+        printf("--------------------BEGIN COUNT-----------------------------\n\n");
+        printf("root node add times \t\t\t\t %lld\n",root_node_add_times);
+        printf("root node multiply times \t\t\t\t %lld\n",root_node_multiply_times);
+        printf("root node mem times \t\t\t %lld\n",root_node_mem_times);
+        printf("\n\n--------------------END COUNT-----------------------------\n\n");
         //sequential
-        ul seq_cycle_st=0,seq_cycle_ed =0;
-        double seq_time_st = MPI_Wtime();
-        GET_CYCLE(seq_cycle_st)
-        C_seq = (MatType*)malloc(size_of_whole_mat);
-        matrix_multiply(A, B, C_seq, N, N, N);
-        GET_CYCLE(seq_cycle_ed)
-        double seq_time_ed = MPI_Wtime();
-        printf("Sequential time%f\n", seq_time_ed - seq_time_st);
-        printf("Sequential cycle%ld\n", seq_cycle_ed - seq_cycle_st);
-        if (isMatrixEqual(C, C_seq, N, N)) {
-            printf("[P_0] Congratulations! The two results are equal.\n");
-        }
-        else {
-            printf("[P_0] Bad news! The two results do not match.\n");
-        }
+//        ul seq_cycle_st=0,seq_cycle_ed =0;
+//        double seq_time_st = MPI_Wtime();
+//        GET_CYCLE(seq_cycle_st)
+//        C_seq = (MatType*)malloc(size_of_whole_mat);
+//        matrix_multiply(A, B, C_seq, N, N, N);
+//        GET_CYCLE(seq_cycle_ed)
+//        double seq_time_ed = MPI_Wtime();
+//        printf("Sequential time%f\n", seq_time_ed - seq_time_st);
+//        printf("Sequential cycle%ld\n", seq_cycle_ed - seq_cycle_st);
+//        if (isMatrixEqual(C, C_seq, N, N)) {
+//            printf("[P_0] Congratulations! The two results are equal.\n");
+//        }
+//        else {
+//            printf("[P_0] Bad news! The two results do not match.\n");
+//        }
 
         free(C);
         free(A);
-        free(C_seq);
+        //free(C_seq);
     }
 
 

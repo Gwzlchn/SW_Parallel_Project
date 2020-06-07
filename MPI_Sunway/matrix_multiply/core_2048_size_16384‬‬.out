@@ -1,2 +1,0 @@
-[31m[1m CATCHSIG: Myid = 0(CPU  186,CG 0), si_signo = 11(Segmentation Fault: PC = 0x4ff0416c90) [0m
-[vn000186:mpi_rank_0][MPIDI_CH3_Abort] application called MPI_Abort(MPI_COMM_WORLD, 1000) - process 0: No such file or directory (2)

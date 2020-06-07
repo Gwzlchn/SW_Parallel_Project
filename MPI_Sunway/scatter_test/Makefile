@@ -7,12 +7,12 @@ SWLU_INC = $(SWLU)/include/
 SWLU_LIB = $(SWLU)/lib/
 MPI_INC = /usr/sw-mpp/mpi2/include
 
-TARGET = ins_test
+TARGET = scatter_test
 CFLAGS = -g -Wall -O0 -host -std=gnu99
 INCLUDE = -I$(SWLU_INC) -I$(MPI_INC)
 LB_LIB = -L$(SWLU_LIB)
-SOURCES = ins_test.c
-OBJ = ins_test.o
+SOURCES = scatter_test.c
+OBJ = scatter_test.o
 SEQ_LDFLAGS = -lswlu
 MPI_LDFLAGS = -lswlu_mpi
 

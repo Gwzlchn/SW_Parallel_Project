@@ -26,8 +26,8 @@ typedef enum {
 const long double PI = M_PI;
 MPI_Datatype  MPI_OWN_COMPLEX_TYPE;
 #define debug0 0
-typedef long long IntCoefType;
-typedef long LenType;
+typedef unsigned long long IntCoefType;
+typedef unsigned long LenType;
 
 
 /* create a type for struct complex */
@@ -78,7 +78,7 @@ inline LenType count_file_line(FILE* file_ptr) {
 inline void init_integer_array_from_file(FILE* file_ptr, IntCoefType* arr, LenType file_line_cnt) {
     LenType i = 0;
     for (i = 0; i < file_line_cnt; i++) {
-        fscanf(file_ptr, "%d", &arr[i]);
+        fscanf(file_ptr, "%lld", &arr[i]);
     }
 }
 

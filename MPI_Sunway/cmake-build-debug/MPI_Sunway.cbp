@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="MPI_Sunway"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\instruction\;CMake Files\matrix_multiply\;CMake Files\parallel_fft\;CMake Files\prefix_sum\;CMake Files\sample_sort\;CMake Files\scatter_test\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ins_test">
+				<Option output="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/instruction/ins_test.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/instruction"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files (x86)/Microsoft SDKs/MPI/Include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/instruction/Makefile&quot;  VERBOSE=1 ins_test"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/instruction/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/instruction/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/instruction/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ins_test/fast">
+				<Option output="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/instruction/ins_test.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/instruction"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files (x86)/Microsoft SDKs/MPI/Include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/instruction/Makefile&quot;  VERBOSE=1 ins_test/fast"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/instruction/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/instruction/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/instruction/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="matrix_multiply">
+				<Option output="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/matrix_multiply/matrix_multiply.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/matrix_multiply"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files (x86)/Microsoft SDKs/MPI/Include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/matrix_multiply/Makefile&quot;  VERBOSE=1 matrix_multiply"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/matrix_multiply/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/matrix_multiply/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/matrix_multiply/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="matrix_multiply/fast">
+				<Option output="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/matrix_multiply/matrix_multiply.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/matrix_multiply"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files (x86)/Microsoft SDKs/MPI/Include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/matrix_multiply/Makefile&quot;  VERBOSE=1 matrix_multiply/fast"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/matrix_multiply/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/matrix_multiply/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/matrix_multiply/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="parallel_fft">
+				<Option output="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/parallel_fft/parallel_fft.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/parallel_fft"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files (x86)/Microsoft SDKs/MPI/Include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/parallel_fft/Makefile&quot;  VERBOSE=1 parallel_fft"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/parallel_fft/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/parallel_fft/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/parallel_fft/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="parallel_fft/fast">
+				<Option output="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/parallel_fft/parallel_fft.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/parallel_fft"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files (x86)/Microsoft SDKs/MPI/Include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/parallel_fft/Makefile&quot;  VERBOSE=1 parallel_fft/fast"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/parallel_fft/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/parallel_fft/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/parallel_fft/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="prefix_sum">
+				<Option output="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/prefix_sum/prefix_sum.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/prefix_sum"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files (x86)/Microsoft SDKs/MPI/Include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/prefix_sum/Makefile&quot;  VERBOSE=1 prefix_sum"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/prefix_sum/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/prefix_sum/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/prefix_sum/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="prefix_sum/fast">
+				<Option output="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/prefix_sum/prefix_sum.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/prefix_sum"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files (x86)/Microsoft SDKs/MPI/Include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/prefix_sum/Makefile&quot;  VERBOSE=1 prefix_sum/fast"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/prefix_sum/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/prefix_sum/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/prefix_sum/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="sample_sort">
+				<Option output="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/sample_sort/sample_sort.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/sample_sort"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files (x86)/Microsoft SDKs/MPI/Include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/sample_sort/Makefile&quot;  VERBOSE=1 sample_sort"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/sample_sort/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/sample_sort/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/sample_sort/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="sample_sort/fast">
+				<Option output="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/sample_sort/sample_sort.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/sample_sort"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files (x86)/Microsoft SDKs/MPI/Include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/sample_sort/Makefile&quot;  VERBOSE=1 sample_sort/fast"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/sample_sort/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/sample_sort/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/sample_sort/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="scatter_test">
+				<Option output="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/scatter_test/scatter_test.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/scatter_test"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files (x86)/Microsoft SDKs/MPI/Include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/scatter_test/Makefile&quot;  VERBOSE=1 scatter_test"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/scatter_test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/scatter_test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/scatter_test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="scatter_test/fast">
+				<Option output="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/scatter_test/scatter_test.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/scatter_test"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files (x86)/Microsoft SDKs/MPI/Include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/scatter_test/Makefile&quot;  VERBOSE=1 scatter_test/fast"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/scatter_test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/scatter_test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/cmake-build-debug/scatter_test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/instruction/ins_test.c">
+			<Option target="ins_test"/>
+		</Unit>
+		<Unit filename="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/matrix_multiply/matrix_multiply.c">
+			<Option target="matrix_multiply"/>
+		</Unit>
+		<Unit filename="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/parallel_fft/parallel_fft.c">
+			<Option target="parallel_fft"/>
+		</Unit>
+		<Unit filename="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/prefix_sum/prefix_sum.c">
+			<Option target="prefix_sum"/>
+		</Unit>
+		<Unit filename="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/sample_sort/sample_sort.c">
+			<Option target="sample_sort"/>
+		</Unit>
+		<Unit filename="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/scatter_test/scatter_test.c">
+			<Option target="scatter_test"/>
+		</Unit>
+		<Unit filename="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/instruction/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\instruction\"/>
+		</Unit>
+		<Unit filename="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/matrix_multiply/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\matrix_multiply\"/>
+		</Unit>
+		<Unit filename="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/parallel_fft/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\parallel_fft\"/>
+		</Unit>
+		<Unit filename="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/prefix_sum/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\prefix_sum\"/>
+		</Unit>
+		<Unit filename="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/sample_sort/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\sample_sort\"/>
+		</Unit>
+		<Unit filename="D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/scatter_test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\scatter_test\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

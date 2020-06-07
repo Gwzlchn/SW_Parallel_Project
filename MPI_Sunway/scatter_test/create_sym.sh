@@ -1,1 +1,0 @@
-readelf -s ins_test > swlu_symtable.txt

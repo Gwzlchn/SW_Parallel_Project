@@ -1,0 +1,23 @@
+pointer B size is 2 MBytes 
+pointer proc_row_C size is 4 KBytes 
+pointer proc_row_A size is 4 KBytes 
+pointer A size is 2 MBytes 
+pointer C size is 2 MBytes 
+MOLLOC DONE
+Scatter DONE
+Cal DONE
+Gather DONE
+-------------------BEGIN TIMER------------------------------
+
+board and scatter time			 0.040051
+multiply time				 0.083235
+gather time				 0.005189
+totally cost time			 0.128609
+
+board and scatter cycle			 58073429
+multiply cycle				 120687415
+gather cycle				 7523353
+totally cost cycle			 186482603
+
+-------------------END TIMER------------------------------
+

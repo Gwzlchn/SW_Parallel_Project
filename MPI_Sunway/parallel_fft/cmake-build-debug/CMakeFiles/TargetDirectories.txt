@@ -1,3 +1,0 @@
-D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/parallel_fft/cmake-build-debug/CMakeFiles/parallel_fft.dir
-D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/parallel_fft/cmake-build-debug/CMakeFiles/edit_cache.dir
-D:/Users/Zelin/Desktop/Sunway/code/MPI_Sunway/parallel_fft/cmake-build-debug/CMakeFiles/rebuild_cache.dir

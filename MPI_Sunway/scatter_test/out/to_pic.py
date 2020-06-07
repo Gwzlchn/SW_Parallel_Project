@@ -135,7 +135,7 @@ for i, ax in enumerate(axs.flat):
 
     cur_slope = format(slopes[i], '.3f')
     print(cur_slope)
-    first_title = 'the whole number of nodes is ' + str(keys[i]) + '\n The bandwith is '+str(cur_slope)+' bytes/sec'
+    first_title = 'the whole number of nodes is ' + str(keys[i]) + '\n The bandwith is '+str(cur_slope)+' bytes/cycle'
     ax.set_title(first_title)
    # ax.legend(['Cycles'],loc= 'upper left')
 

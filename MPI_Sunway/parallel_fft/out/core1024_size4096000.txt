@@ -1,0 +1,14 @@
+--------------------------BEGIN TIMER------------------------------------------
+
+array bit reverse cycle						 3415597224
+root node scatter array to leaf cycle				 6865030747
+leaf node fft first logP cycle					 1216343
+parent nodes recv array from children until root cycle		 657694407
+root node scatter array to leaf cycle				 37636194
+leaf node fft first logP cycle					 1208765
+parent nodes recv array from children until root cycle		 657799336
+
+total cycle 							 11637190252
+
+--------------------------END TIMER------------------------------------------
+

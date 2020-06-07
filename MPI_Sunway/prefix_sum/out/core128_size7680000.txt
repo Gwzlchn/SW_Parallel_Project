@@ -1,0 +1,25 @@
+-------------------BEGIN---------------
+
+TOTAL LENGTH: 		 7680000
+LENGTH PER PROCESSOR: 	60000
+
+-------------------BEGIN TIMER---------------
+scatter time							 0.011934
+First step time							 0.000560
+gather last elem then scatter time				 0.000122
+gather prev last value then add a constant to chunk time	 0.084926
+total cost time							 0.097720
+
+scatter cycle							 17303917
+First step cycle						 812027
+gather last elem then scatter cycle				 177010
+gather prev last value then add a constant to chunk cycle	 123141611
+total cost cycle						 141692772
+
+-------------------END TIMER---------------
+
+[P_0] Congradulations! The two results are equal.
+Sequential time							 0.072829
+Sequential cycle						 105597862
+
+-------------------END---------------

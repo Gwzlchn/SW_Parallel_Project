@@ -1,2 +1,0 @@
-[49100428 ## mn052: 29520 ## Wed May 20 00:53:19 2020]  update_cnode_alive_list: ####### nodeid: [3096] unavailable, [failed-code: 17, reason: CNODE_STARTJOB_UNREACHABLE]
-[49100428 ## mn052: 29520 ## Wed May 20 00:53:19 2020]  submit-job failed, because some compute-nodes in list: [3096] unavailable! check these nodes please!!!
